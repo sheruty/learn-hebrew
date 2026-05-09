@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Hebrew — Flashcards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f2ed;
+      --surface: #ffffff;
+      --primary: #2563eb;
+      --primary-lt: #dbeafe;
+      --success: #15803d;
+      --success-lt: #dcfce7;
+      --danger: #b91c1c;
+      --danger-lt: #fee2e2;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 2px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      padding: 1.125rem 2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .logo-heb {
+      font-family: 'Frank Ruhl Libre', serif;
+      color: var(--primary);
+      font-size: 1.4rem;
+    }
+
+    .progress-pill {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--primary-lt);
+      padding: 0.3rem 0.875rem;
+      border-radius: 999px;
+    }
+
+    .progress-pill .n { color: var(--primary); }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 620px;
+      padding: 1.75rem 1.25rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    /* ── Category tabs ── */
+    .cats {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cat-btn {
+      padding: 0.4375rem 1.125rem;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .cat-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    .cat-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* ── Progress bar ── */
+    .bar-track {
+      width: 100%;
+      height: 5px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--success);
+      border-radius: 999px;
+      transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .deck-label {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      align-self: flex-end;
+    }
+
+    /* ── Card ── */
+    .card-wrap {
+      width: 100%;
+      perspective: 1200px;
+    }
+
+    .card {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.52s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .card.flipped { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 1.25rem;
+      box-shadow: var(--shadow);
+      background: var(--surface);
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.875rem;
+    }
+
+    .face-back { transform: rotateY(180deg); }
+
+    /* top-left label */
+    .face-label {
+      position: absolute;
+      top: 1.125rem;
+      left: 1.375rem;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    /* top-right nikud badge */
+    .nikud-tag {
+      position: absolute;
+      top: 1.125rem;
+      right: 1.375rem;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.175rem 0.6rem;
+      font-family: 'Frank Ruhl Libre', serif;
+    }
+
+    /* Hebrew text */
+    .heb {
+      font-family: 'Frank Ruhl Libre', serif;
+      font-size: 4.5rem;
+      font-weight: 400;
+      color: var(--text);
+      direction: rtl;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    /* Audio button */
+    .audio-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.775rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .audio-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .audio-btn.playing { border-color: var(--primary); color: var(--primary); }
+
+    /* bottom hint */
+    .hint {
+      position: absolute;
+      bottom: 1rem;
+      font-size: 0.7125rem;
+      color: var(--muted);
+      opacity: 0.55;
+    }
+
+    /* Back face */
+    .en {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .note {
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-style: italic;
+      min-height: 1.25em;
+    }
+
+    /* ── Action buttons ── */
+    .actions {
+      display: flex;
+      gap: 0.875rem;
+      width: 100%;
+    }
+
+    .act-btn {
+      flex: 1;
+      padding: 0.8125rem 1.25rem;
+      border: none;
+      border-radius: 0.875rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, opacity 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .act-btn:disabled { opacity: 0.35; cursor: default; }
+
+    .again { background: var(--danger-lt); color: var(--danger); }
+    .again:not(:disabled):hover { background: var(--danger); color: #fff; }
+
+    .got { background: var(--success-lt); color: var(--success); }
+    .got:not(:disabled):hover { background: var(--success); color: #fff; }
+
+    /* ── Keyboard hint ── */
+    .kbd-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      opacity: 0.65;
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 0.1em 0.4em;
+      background: var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.7rem;
+    }
+
+    /* ── Completion ── */
+    .completion {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      width: 100%;
+    }
+
+    .completion.show { display: flex; }
+
+    .completion-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--success-lt);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--success);
+    }
+
+    .completion h2 { font-size: 1.625rem; font-weight: 700; }
+
+    .completion p { color: var(--muted); max-width: 340px; line-height: 1.55; }
+
+    .restart-btn {
+      padding: 0.8125rem 2.25rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 0.875rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.15s;
+    }
+
+    .restart-btn:hover { opacity: 0.85; }
+
+    @media (max-width: 480px) {
+      .heb { font-size: 3.25rem; }
+      .en { font-size: 1.5rem; }
+      .card { height: 260px; }
+      header { padding: 1rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Learn <span class="logo-heb">עברית</span></div>
+  <div class="progress-pill">
+    <span class="n" id="learnedN">0</span> / <span id="totalN">0</span> learned
+  </div>
+</header>
+
+<main>
+
+  <div class="cats" id="cats">
+    <button class="cat-btn active" data-cat="all">All</button>
+    <button class="cat-btn" data-cat="pronouns">Pronouns</button>
+    <button class="cat-btn" data-cat="greetings">Greetings</button>
+    <button class="cat-btn" data-cat="daily">Daily Terms</button>
+  </div>
+
+  <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+
+  <div class="deck-label" id="deckLabel">— cards remaining</div>
+
+  <!-- Flashcard -->
+  <div class="card-wrap" id="cardWrap">
+    <div class="card" id="card">
+
+      <div class="face face-front">
+        <span class="face-label" id="frontCat"></span>
+        <span class="nikud-tag" id="nikudTag"></span>
+        <div class="heb" id="hebDisplay" dir="rtl"></div>
+        <button class="audio-btn" id="audioBtn"
+          onclick="event.stopPropagation(); speakCurrent(this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          Listen
+        </button>
+        <span class="hint">Tap card to reveal — or press Space</span>
+      </div>
+
+      <div class="face face-back">
+        <span class="face-label" id="backCat"></span>
+        <div class="en" id="enDisplay"></div>
+        <div class="note" id="noteDisplay"></div>
+        <button class="audio-btn" id="audioBtnBack"
+          onclick="event.stopPropagation(); speakCurrent(this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          Listen
+        </button>
+        <span class="hint">Tap to flip back</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="act-btn again" id="againBtn" onclick="markAgain()" disabled>
+      &#8617; Again
+    </button>
+    <button class="act-btn got" id="gotBtn" onclick="markGot()" disabled>
+      Got it &#10003;
+    </button>
+  </div>
+
+  <div class="kbd-hint">
+    <kbd>Space</kbd> flip &nbsp; <kbd>&larr;</kbd> again &nbsp; <kbd>&rarr;</kbd> got it
+  </div>
+
+  <!-- Completion -->
+  <div class="completion" id="completion">
+    <div class="completion-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>Session complete!</h2>
+    <p id="completionMsg"></p>
+    <button class="restart-btn" onclick="restartSession()">Study Again</button>
+  </div>
+
+</main>
+
+<script>
+// ── Card data ─────────────────────────────────────────────────────────────────
+
+const CARDS = [
+  // Pronouns
+  { id:  1, cat: 'pronouns', heb: 'אֲנִי',          plain: 'אני',          en: 'I',                       note: null },
+  { id:  2, cat: 'pronouns', heb: 'אַתָּה',         plain: 'אתה',          en: 'You',                     note: 'masculine singular' },
+  { id:  3, cat: 'pronouns', heb: 'אַתְּ',          plain: 'את',           en: 'You',                     note: 'feminine singular' },
+  { id:  4, cat: 'pronouns', heb: 'הוּא',           plain: 'הוא',          en: 'He',                      note: null },
+  { id:  5, cat: 'pronouns', heb: 'הִיא',           plain: 'היא',          en: 'She',                     note: null },
+  { id:  6, cat: 'pronouns', heb: 'אֲנַחְנוּ',     plain: 'אנחנו',        en: 'We',                      note: null },
+  { id:  7, cat: 'pronouns', heb: 'אַתֶּם',         plain: 'אתם',          en: 'You',                     note: 'masculine plural' },
+  { id:  8, cat: 'pronouns', heb: 'אַתֶּן',         plain: 'אתן',          en: 'You',                     note: 'feminine plural' },
+  { id:  9, cat: 'pronouns', heb: 'הֵם',            plain: 'הם',           en: 'They',                    note: 'masculine' },
+  { id: 10, cat: 'pronouns', heb: 'הֵן',            plain: 'הן',           en: 'They',                    note: 'feminine' },
+
+  // Greetings
+  { id: 11, cat: 'greetings', heb: 'שָׁלוֹם',           plain: 'שלום',         en: 'Hello / Goodbye / Peace',  note: null },
+  { id: 12, cat: 'greetings', heb: 'בֹּקֶר טוֹב',       plain: 'בוקר טוב',     en: 'Good morning',             note: null },
+  { id: 13, cat: 'greetings', heb: 'צָהֳרַיִם טוֹבִים', plain: 'צהריים טובים', en: 'Good afternoon',           note: null },
+  { id: 14, cat: 'greetings', heb: 'עֶרֶב טוֹב',        plain: 'ערב טוב',      en: 'Good evening',             note: null },
+  { id: 15, cat: 'greetings', heb: 'לַיְלָה טוֹב',      plain: 'לילה טוב',     en: 'Good night',               note: null },
+  { id: 16, cat: 'greetings', heb: 'מַה שְּׁלוֹמְךָ',  plain: 'מה שלומך',     en: 'How are you?',             note: 'masculine' },
+  { id: 17, cat: 'greetings', heb: 'מַה שְּׁלוֹמֵךְ',  plain: 'מה שלומך',     en: 'How are you?',             note: 'feminine' },
+  { id: 18, cat: 'greetings', heb: 'בְּסֵדֶר',          plain: 'בסדר',         en: 'OK / Fine / Alright',      note: null },
+  { id: 19, cat: 'greetings', heb: 'לְהִתְרָאוֹת',     plain: 'להתראות',      en: 'See you / Goodbye',        note: null },
+  { id: 20, cat: 'greetings', heb: 'בְּבַקָּשָׁה',     plain: 'בבקשה',        en: "Please / You're welcome",  note: null },
+  { id: 21, cat: 'greetings', heb: 'תּוֹדָה',           plain: 'תודה',         en: 'Thank you',                note: null },
+  { id: 22, cat: 'greetings', heb: 'תּוֹדָה רַבָּה',   plain: 'תודה רבה',     en: 'Thank you very much',      note: null },
+
+  // Daily terms
+  { id: 23, cat: 'daily', heb: 'כֵּן',          plain: 'כן',        en: 'Yes',                   note: null },
+  { id: 24, cat: 'daily', heb: 'לֹא',           plain: 'לא',        en: 'No',                    note: null },
+  { id: 25, cat: 'daily', heb: 'סְלִיחָה',      plain: 'סליחה',     en: 'Excuse me / Sorry',     note: null },
+  { id: 26, cat: 'daily', heb: 'אֵיפֹה',        plain: 'איפה',      en: 'Where',                 note: null },
+  { id: 27, cat: 'daily', heb: 'מָה',           plain: 'מה',        en: 'What',                  note: null },
+  { id: 28, cat: 'daily', heb: 'מִי',           plain: 'מי',        en: 'Who',                   note: null },
+  { id: 29, cat: 'daily', heb: 'מָתַי',         plain: 'מתי',       en: 'When',                  note: null },
+  { id: 30, cat: 'daily', heb: 'לָמָּה',        plain: 'למה',       en: 'Why',                   note: null },
+  { id: 31, cat: 'daily', heb: 'כַּמָּה',       plain: 'כמה',       en: 'How much / How many',   note: null },
+  { id: 32, cat: 'daily', heb: 'אֵיךְ',         plain: 'איך',       en: 'How',                   note: null },
+  { id: 33, cat: 'daily', heb: 'עֶזְרָה',       plain: 'עזרה',      en: 'Help',                  note: null },
+  { id: 34, cat: 'daily', heb: 'מַיִם',         plain: 'מים',       en: 'Water',                 note: null },
+  { id: 35, cat: 'daily', heb: 'אֹכֶל',         plain: 'אוכל',      en: 'Food',                  note: null },
+  { id: 36, cat: 'daily', heb: 'בַּיִת',        plain: 'בית',       en: 'Home / House',          note: null },
+  { id: 37, cat: 'daily', heb: 'שֵׁם',          plain: 'שם',        en: 'Name',                  note: null },
+  { id: 38, cat: 'daily', heb: 'יוֹם',          plain: 'יום',       en: 'Day',                   note: null },
+  { id: 39, cat: 'daily', heb: 'שָׁנָה',        plain: 'שנה',       en: 'Year',                  note: null },
+  { id: 40, cat: 'daily', heb: 'טוֹב',          plain: 'טוב',       en: 'Good',                  note: null },
+  { id: 41, cat: 'daily', heb: 'חָבֵר',         plain: 'חבר',       en: 'Friend',                note: 'masculine' },
+  { id: 42, cat: 'daily', heb: 'חֲבֵרָה',       plain: 'חברה',      en: 'Friend',                note: 'feminine' },
+  { id: 43, cat: 'daily', heb: 'כֶּסֶף',        plain: 'כסף',       en: 'Money',                 note: null },
+  { id: 44, cat: 'daily', heb: 'שָׁעָה',        plain: 'שעה',       en: 'Hour / O\'clock',       note: null },
+  { id: 45, cat: 'daily', heb: 'רְחוֹב',        plain: 'רחוב',      en: 'Street',                note: null },
+];
+
+const CAT_LABELS = { pronouns: 'Pronoun', greetings: 'Greeting', daily: 'Daily Term' };
+
+// ── State ─────────────────────────────────────────────────────────────────────
+
+let deck = [];
+let learnedIds = new Set();
+let current = null;
+let showNikud = true;
+let flipped = false;
+let activeCat = 'all';
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function $ (id) { return document.getElementById(id); }
+
+// ── Core logic ────────────────────────────────────────────────────────────────
+
+function initDeck(cat) {
+  const pool = cat === 'all' ? CARDS : CARDS.filter(c => c.cat === cat);
+  deck = shuffle([...pool]);
+  learnedIds.clear();
+  flipped = false;
+  updateProgress();
+  showCard();
+}
+
+function updateProgress() {
+  const total = deck.length + learnedIds.size;
+  $('learnedN').textContent = learnedIds.size;
+  $('totalN').textContent   = total;
+  const pct = total > 0 ? (learnedIds.size / total) * 100 : 0;
+  $('barFill').style.width  = pct + '%';
+  $('deckLabel').textContent = deck.length === 0
+    ? 'All cards learned!'
+    : `${deck.length} card${deck.length !== 1 ? 's' : ''} remaining`;
+}
+
+function showCard() {
+  const wrap = $('cardWrap');
+  const actions = document.querySelector('.actions');
+  const kbdHint = document.querySelector('.kbd-hint');
+  const comp = $('completion');
+
+  if (deck.length === 0) {
+    wrap.style.display    = 'none';
+    actions.style.display = 'none';
+    kbdHint.style.display = 'none';
+    comp.classList.add('show');
+    const n = learnedIds.size;
+    $('completionMsg').textContent =
+      `You worked through all ${n} card${n !== 1 ? 's' : ''} in this set. Keep going!`;
+    return;
+  }
+
+  comp.classList.remove('show');
+  wrap.style.display    = '';
+  actions.style.display = '';
+  kbdHint.style.display = '';
+
+  current   = deck[0];
+  showNikud = Math.random() < 0.55;
+  flipped   = false;
+
+  const card = $('card');
+  // Snap back to front instantly so the new English content is never visible mid-flip
+  card.style.transition = 'none';
+  card.classList.remove('flipped');
+  card.offsetHeight; // force reflow before re-enabling transition
+  card.style.transition = '';
+
+  const catLabel = CAT_LABELS[current.cat];
+  $('frontCat').textContent   = catLabel;
+  $('backCat').textContent    = catLabel;
+  $('nikudTag').textContent   = showNikud ? 'נִקּוּד' : 'ללא ניקוד';
+  $('hebDisplay').textContent = showNikud ? current.heb : current.plain;
+  $('enDisplay').textContent  = current.en;
+  $('noteDisplay').textContent = current.note ? `(${current.note})` : '';
+
+  $('againBtn').disabled = true;
+  $('gotBtn').disabled   = true;
+}
+
+function flip() {
+  if (!current) return;
+  flipped = !flipped;
+  $('card').classList.toggle('flipped', flipped);
+  $('againBtn').disabled = !flipped;
+  $('gotBtn').disabled   = !flipped;
+}
+
+function markGot() {
+  if (!current || !flipped) return;
+  learnedIds.add(current.id);
+  deck.shift();
+  updateProgress();
+  showCard();
+}
+
+function markAgain() {
+  if (!current || !flipped) return;
+  const card = deck.shift();
+  // Re-insert at a random position (not first) to avoid immediate repeat
+  const pos = deck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.max(1, Math.min(deck.length, 4)));
+  deck.splice(pos, 0, card);
+  updateProgress();
+  showCard();
+}
+
+function speakCurrent(btnEl) {
+  if (!current) return;
+  if (!window.speechSynthesis) { alert('Audio is not supported in this browser.'); return; }
+  window.speechSynthesis.cancel();
+
+  const utt = new SpeechSynthesisUtterance(current.heb);
+  utt.lang  = 'he-IL';
+  utt.rate  = 0.82;
+  utt.pitch = 1;
+
+  const voices  = speechSynthesis.getVoices();
+  const heVoice = voices.find(v => v.lang && v.lang.startsWith('he'));
+  if (heVoice) utt.voice = heVoice;
+
+  if (btnEl) {
+    btnEl.classList.add('playing');
+    utt.onend = () => btnEl.classList.remove('playing');
+  }
+
+  speechSynthesis.speak(utt);
+}
+
+function restartSession() { initDeck(activeCat); }
+
+// ── Events ────────────────────────────────────────────────────────────────────
+
+$('cats').addEventListener('click', e => {
+  const btn = e.target.closest('.cat-btn');
+  if (!btn) return;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = btn.dataset.cat;
+  initDeck(activeCat);
+});
+
+$('card').addEventListener('click', flip);
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'BUTTON') return;
+  if (e.code === 'Space')       { e.preventDefault(); flip(); }
+  if (e.code === 'ArrowRight')  { e.preventDefault(); if (flipped) markGot(); }
+  if (e.code === 'ArrowLeft')   { e.preventDefault(); if (flipped) markAgain(); }
+});
+
+// Voices load asynchronously in some browsers
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = () => {};
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+
+initDeck('all');
+</script>
+</body>
+</html>
