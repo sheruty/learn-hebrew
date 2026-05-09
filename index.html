@@ -6,7 +6,7 @@
   <title>Learn Hebrew</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Heebo:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:         #f4f2ed;
@@ -38,29 +38,18 @@
     /* ── Header ── */
     header {
       width: 100%;
-      padding: 1rem 1.5rem;
+      padding: 0.875rem 1.5rem;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      gap: 0.875rem;
     }
 
-    .logo {
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      flex-shrink: 0;
-    }
+    .logo { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; flex-shrink: 0; }
+    .logo-heb { font-family: 'Frank Ruhl Libre', serif; color: var(--primary); font-size: 1.3rem; }
 
-    .logo-heb {
-      font-family: 'Frank Ruhl Libre', serif;
-      color: var(--primary);
-      font-size: 1.35rem;
-    }
-
-    /* Mode toggle */
     .mode-toggle {
       display: flex;
       background: var(--bg);
@@ -72,11 +61,11 @@
     }
 
     .mode-btn {
-      padding: 0.3rem 0.9rem;
+      padding: 0.275rem 0.75rem;
       border-radius: 999px;
       border: none;
       background: none;
-      font-size: 0.8rem;
+      font-size: 0.775rem;
       font-weight: 500;
       color: var(--muted);
       cursor: pointer;
@@ -93,11 +82,11 @@
     }
 
     .progress-pill {
-      font-size: 0.8rem;
+      font-size: 0.775rem;
       font-weight: 600;
       color: var(--muted);
       background: var(--primary-lt);
-      padding: 0.3rem 0.8rem;
+      padding: 0.275rem 0.75rem;
       border-radius: 999px;
       white-space: nowrap;
       flex-shrink: 0;
@@ -109,12 +98,12 @@
     main {
       flex: 1;
       width: 100%;
-      max-width: 620px;
-      padding: 1.75rem 1.25rem 2.5rem;
+      max-width: 640px;
+      padding: 1.5rem 1.25rem 2.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.25rem;
+      gap: 1.125rem;
     }
 
     /* ── Category tabs ── */
@@ -126,7 +115,7 @@
     }
 
     .cat-btn {
-      padding: 0.4rem 1.1rem;
+      padding: 0.375rem 1rem;
       border-radius: 999px;
       border: 1.5px solid var(--border);
       background: var(--surface);
@@ -142,332 +131,243 @@
     .cat-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
     /* ── Progress bar ── */
-    .bar-track {
-      width: 100%;
-      height: 5px;
-      background: var(--border);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      height: 100%;
-      background: var(--success);
-      border-radius: 999px;
-      transition: width 0.45s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    .deck-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      align-self: flex-end;
-    }
+    .bar-track { width: 100%; height: 5px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--success); border-radius: 999px; transition: width 0.45s cubic-bezier(0.4,0,0.2,1); }
+    .deck-label { font-size: 0.8rem; color: var(--muted); align-self: flex-end; }
 
     /* ── Sections ── */
-    .section {
-      display: none;
-      width: 100%;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.25rem;
-    }
-
+    .section { display: none; width: 100%; flex-direction: column; align-items: center; gap: 1.125rem; }
     .section.active { display: flex; }
 
-    /* ── Shared card face pieces ── */
+    /* ── Shared card pieces ── */
     .face-label {
-      position: absolute;
-      top: 1.125rem;
-      left: 1.375rem;
-      font-size: 0.6875rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
+      position: absolute; top: 1.125rem; left: 1.375rem;
+      font-size: 0.6875rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted);
     }
 
     .nikud-tag {
-      position: absolute;
-      top: 1.125rem;
-      right: 1.375rem;
-      font-size: 0.6875rem;
-      font-weight: 500;
-      color: var(--muted);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 0.175rem 0.6rem;
+      position: absolute; top: 1.125rem; right: 1.375rem;
+      font-size: 0.6875rem; font-weight: 500; color: var(--muted);
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.175rem 0.6rem;
       font-family: 'Frank Ruhl Libre', serif;
     }
 
     .heb {
       font-family: 'Frank Ruhl Libre', serif;
-      font-size: 4.5rem;
-      font-weight: 400;
-      color: var(--text);
-      direction: rtl;
-      line-height: 1.1;
-      text-align: center;
+      font-size: 4.5rem; font-weight: 400; color: var(--text);
+      direction: rtl; line-height: 1.1; text-align: center;
     }
 
-    .audio-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.375rem;
-      background: none;
-      border: 1.5px solid var(--border);
-      border-radius: 999px;
-      padding: 0.3rem 0.9rem;
-      font-size: 0.775rem;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .audio-btn:hover, .audio-btn.playing {
-      border-color: var(--primary);
+    .heb.cursive-font {
+      font-family: 'Heebo', sans-serif;
       color: var(--primary);
     }
 
-    .hint {
-      position: absolute;
-      bottom: 1rem;
-      font-size: 0.7rem;
-      color: var(--muted);
-      opacity: 0.5;
+    .audio-btn {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      background: none; border: 1.5px solid var(--border); border-radius: 999px;
+      padding: 0.3rem 0.9rem; font-size: 0.775rem; font-weight: 500;
+      color: var(--muted); cursor: pointer; transition: border-color 0.15s, color 0.15s;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* ── Flashcard ── */
-    .card-wrap {
-      width: 100%;
-      perspective: 1200px;
-    }
+    .audio-btn:hover, .audio-btn.playing { border-color: var(--primary); color: var(--primary); }
+
+    .hint { position: absolute; bottom: 1rem; font-size: 0.7rem; color: var(--muted); opacity: 0.5; }
+
+    /* ── Card (shared by FC + Alphabet practice) ── */
+    .card-wrap { width: 100%; perspective: 1200px; }
 
     .card {
-      width: 100%;
-      height: 300px;
-      position: relative;
+      width: 100%; height: 300px; position: relative;
       transform-style: preserve-3d;
       transition: transform 0.52s cubic-bezier(0.4,0,0.2,1);
-      cursor: pointer;
-      user-select: none;
+      cursor: pointer; user-select: none;
     }
 
     .card.flipped { transform: rotateY(180deg); }
 
     .face {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      border-radius: 1.25rem;
-      box-shadow: var(--shadow);
-      background: var(--surface);
+      position: absolute; inset: 0;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: 1.25rem; box-shadow: var(--shadow); background: var(--surface);
       padding: 2rem 2.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 0.875rem;
     }
 
     .face-back { transform: rotateY(180deg); }
 
-    .en {
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--text);
-      text-align: center;
+    .en { font-size: 2rem; font-weight: 600; color: var(--text); text-align: center; }
+    .note { font-size: 0.875rem; color: var(--muted); font-style: italic; min-height: 1.25em; }
+
+    /* form label inside card (print / cursive) */
+    .form-tag {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted);
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.15rem 0.55rem;
     }
 
-    .note {
-      font-size: 0.875rem;
-      color: var(--muted);
-      font-style: italic;
-      min-height: 1.25em;
-    }
+    .form-tag.cursive-tag { color: var(--primary); border-color: var(--primary-lt); background: var(--primary-lt); }
+
+    /* back face secondary letter (other form) */
+    .back-alt-letter { font-size: 2.75rem; }
 
     /* ── FC action buttons ── */
-    .actions {
-      display: flex;
-      gap: 0.875rem;
-      width: 100%;
-    }
+    .actions { display: flex; gap: 0.875rem; width: 100%; }
 
     .act-btn {
-      flex: 1;
-      padding: 0.8rem 1.25rem;
-      border: none;
-      border-radius: 0.875rem;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      cursor: pointer;
+      flex: 1; padding: 0.8rem 1.25rem; border: none; border-radius: 0.875rem;
+      font-size: 0.9375rem; font-weight: 600; cursor: pointer;
       transition: background 0.15s, color 0.15s, opacity 0.15s;
       font-family: 'Inter', sans-serif;
     }
 
     .act-btn:disabled { opacity: 0.35; cursor: default; }
-
     .again { background: var(--danger-lt); color: var(--danger); }
     .again:not(:disabled):hover { background: var(--danger); color: #fff; }
+    .got   { background: var(--success-lt); color: var(--success); }
+    .got:not(:disabled):hover   { background: var(--success); color: #fff; }
 
-    .got { background: var(--success-lt); color: var(--success); }
-    .got:not(:disabled):hover { background: var(--success); color: #fff; }
-
-    .kbd-hint {
-      font-size: 0.75rem;
-      color: var(--muted);
-      opacity: 0.65;
-    }
-
-    kbd {
-      display: inline-block;
-      padding: 0.1em 0.4em;
-      background: var(--border);
-      border-radius: 4px;
-      font-family: inherit;
-      font-size: 0.7rem;
-    }
+    .kbd-hint { font-size: 0.75rem; color: var(--muted); opacity: 0.65; }
+    kbd { display: inline-block; padding: 0.1em 0.4em; background: var(--border); border-radius: 4px; font-family: inherit; font-size: 0.7rem; }
 
     /* ── Multiple Choice ── */
-    .mc-score {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--muted);
-      align-self: flex-end;
-    }
-
+    .mc-score { font-size: 0.8125rem; font-weight: 600; color: var(--muted); align-self: flex-end; }
     .mc-score .cn { color: var(--success); }
 
     .mc-question {
-      width: 100%;
-      background: var(--surface);
-      border-radius: 1.25rem;
-      box-shadow: var(--shadow);
-      padding: 2rem 2.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      position: relative;
-      min-height: 200px;
-      justify-content: center;
+      width: 100%; background: var(--surface); border-radius: 1.25rem;
+      box-shadow: var(--shadow); padding: 2rem 2.5rem;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1rem; position: relative; min-height: 200px; justify-content: center;
     }
 
-    .mc-choices {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.625rem;
-      width: 100%;
-    }
+    .mc-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; width: 100%; }
 
     .choice-btn {
-      padding: 0.875rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 0.75rem;
-      background: var(--surface);
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text);
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s, color 0.15s;
-      font-family: 'Inter', sans-serif;
-      text-align: center;
-      line-height: 1.35;
+      padding: 0.875rem 1rem; border: 1.5px solid var(--border); border-radius: 0.75rem;
+      background: var(--surface); font-size: 0.875rem; font-weight: 500; color: var(--text);
+      cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s;
+      font-family: 'Inter', sans-serif; text-align: center; line-height: 1.35;
     }
 
-    .choice-btn:hover:not(:disabled) {
-      border-color: var(--primary);
-      background: var(--primary-lt);
-      color: var(--primary);
-    }
-
-    .choice-btn.correct {
-      border-color: var(--success) !important;
-      background: var(--success-lt) !important;
-      color: var(--success) !important;
-    }
-
-    .choice-btn.wrong {
-      border-color: var(--danger) !important;
-      background: var(--danger-lt) !important;
-      color: var(--danger) !important;
-    }
-
+    .choice-btn:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-lt); color: var(--primary); }
+    .choice-btn.correct { border-color: var(--success) !important; background: var(--success-lt) !important; color: var(--success) !important; }
+    .choice-btn.wrong   { border-color: var(--danger)  !important; background: var(--danger-lt)  !important; color: var(--danger)  !important; }
     .choice-btn:disabled { cursor: default; }
 
     .mc-next {
-      width: 100%;
-      padding: 0.8125rem;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: 0.875rem;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: opacity 0.15s;
-      display: none;
+      width: 100%; padding: 0.8125rem; background: var(--primary); color: #fff;
+      border: none; border-radius: 0.875rem; font-size: 0.9375rem; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.15s; display: none;
     }
 
     .mc-next.visible { display: block; }
     .mc-next:hover { opacity: 0.85; }
 
+    /* ── Alphabet section ── */
+    .alph-tabs {
+      display: flex;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 999px; padding: 3px; gap: 2px;
+    }
+
+    .alph-tab {
+      padding: 0.3rem 1.125rem; border-radius: 999px; border: none;
+      background: none; font-size: 0.8125rem; font-weight: 500; color: var(--muted);
+      cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .alph-tab.active { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    .alph-view-row { display: flex; gap: 0.5rem; align-self: flex-end; }
+
+    .av-btn {
+      padding: 0.35rem 0.875rem; border-radius: 999px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      font-size: 0.775rem; font-weight: 500; color: var(--muted);
+      cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .av-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* Reference grid */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.625rem;
+      width: 100%;
+    }
+
+    .letter-card {
+      background: var(--surface); border-radius: 0.875rem;
+      box-shadow: var(--shadow); padding: 0.875rem 0.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+      cursor: default;
+    }
+
+    .lc-num { font-size: 0.6rem; color: var(--muted); font-weight: 500; align-self: flex-start; padding-left: 0.25rem; }
+    .lc-print { font-family: 'Frank Ruhl Libre', serif; font-size: 2.25rem; color: var(--text); direction: rtl; line-height: 1; }
+    .lc-name  { font-size: 0.675rem; font-weight: 600; color: var(--text); text-align: center; line-height: 1.2; margin-top: 0.1rem; }
+    .lc-sound { font-size: 0.575rem; color: var(--muted); font-style: italic; text-align: center; }
+    .lc-final { font-size: 0.575rem; color: var(--muted); text-align: center; direction: rtl; }
+
+    .lc-divider { width: 80%; height: 1px; background: var(--border); margin: 0.3rem 0; }
+
+    .lc-cursive { font-family: 'Heebo', sans-serif; font-size: 2.25rem; color: var(--primary); direction: rtl; line-height: 1; }
+    .lc-cursive-label { font-size: 0.5rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.7; }
+
+    .alph-note {
+      font-size: 0.7375rem; color: var(--muted); text-align: center;
+      padding: 0.625rem 1rem; background: var(--surface);
+      border-radius: 0.625rem; border: 1px solid var(--border);
+      line-height: 1.5; width: 100%;
+    }
+
+    /* Alphabet practice deck label */
+    .alph-deck-label { font-size: 0.8rem; color: var(--muted); align-self: flex-end; }
+
     /* ── Completion ── */
     .completion {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.25rem;
-      text-align: center;
-      padding: 2rem 1rem;
-      width: 100%;
+      display: none; flex-direction: column; align-items: center;
+      gap: 1.25rem; text-align: center; padding: 2rem 1rem; width: 100%;
     }
 
     .completion.show { display: flex; }
 
     .completion-icon {
-      width: 60px;
-      height: 60px;
-      background: var(--success-lt);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--success);
+      width: 60px; height: 60px; background: var(--success-lt); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: var(--success);
     }
 
     .completion h2 { font-size: 1.625rem; font-weight: 700; }
-    .completion p { color: var(--muted); max-width: 340px; line-height: 1.55; }
+    .completion p  { color: var(--muted); max-width: 340px; line-height: 1.55; }
 
     .restart-btn {
-      padding: 0.8125rem 2.25rem;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: 0.875rem;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: opacity 0.15s;
+      padding: 0.8125rem 2.25rem; background: var(--primary); color: #fff;
+      border: none; border-radius: 0.875rem; font-size: 0.9375rem; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.15s;
     }
 
     .restart-btn:hover { opacity: 0.85; }
 
-    @media (max-width: 480px) {
-      .heb { font-size: 3.25rem; }
+    @media (max-width: 520px) {
+      .ref-grid { grid-template-columns: repeat(3, 1fr); }
+      .heb { font-size: 3.5rem; }
       .en  { font-size: 1.5rem; }
-      .card { height: 260px; }
-      header { padding: 0.875rem 1rem; }
-      .mode-btn { padding: 0.275rem 0.65rem; }
+      .card { height: 270px; }
     }
 
-    @media (max-width: 360px) {
+    @media (max-width: 380px) {
+      .ref-grid { grid-template-columns: repeat(2, 1fr); }
       .mc-choices { grid-template-columns: 1fr; }
+      .mode-btn { padding: 0.25rem 0.55rem; font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -477,18 +377,19 @@
   <div class="logo">Learn <span class="logo-heb">עברית</span></div>
 
   <div class="mode-toggle" id="modeToggle">
-    <button class="mode-btn active" data-mode="fc">Flashcards</button>
-    <button class="mode-btn"        data-mode="mc">Multiple Choice</button>
+    <button class="mode-btn active" data-mode="fc">Cards</button>
+    <button class="mode-btn"        data-mode="mc">Quiz</button>
+    <button class="mode-btn"        data-mode="alph">Alphabet</button>
   </div>
 
   <div class="progress-pill">
-    <span class="n" id="learnedN">0</span> / <span id="totalN">0</span> learned
+    <span class="n" id="learnedN">0</span> / <span id="totalN">0</span> <span id="pillLabel">learned</span>
   </div>
 </header>
 
 <main>
 
-  <!-- Category filters (shared) -->
+  <!-- Category filters (vocab modes only) -->
   <div class="cats" id="cats">
     <button class="cat-btn active" data-cat="all">All</button>
     <button class="cat-btn" data-cat="pronouns">Pronouns</button>
@@ -496,28 +397,23 @@
     <button class="cat-btn" data-cat="daily">Daily Terms</button>
   </div>
 
-  <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+  <div class="bar-track" id="barTrack"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
   <div class="deck-label" id="deckLabel"></div>
 
   <!-- ── Flashcard section ── -->
   <div class="section active" id="fcSection">
-
-    <div class="card-wrap" id="cardWrap">
+    <div class="card-wrap">
       <div class="card" id="card">
 
-        <div class="face face-front">
+        <div class="face">
           <span class="face-label" id="frontCat"></span>
           <span class="nikud-tag"  id="nikudTag"></span>
           <div class="heb" id="hebDisplay" dir="rtl"></div>
-          <button class="audio-btn" id="audioBtn"
-            onclick="event.stopPropagation(); speakCard(fcCurrent, this)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+          <button class="audio-btn" onclick="event.stopPropagation(); speakCard(fcCurrent, this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-            </svg>
-            Listen
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>Listen
           </button>
           <span class="hint">Tap to reveal &nbsp;·&nbsp; Space</span>
         </div>
@@ -526,15 +422,11 @@
           <span class="face-label" id="backCat"></span>
           <div class="en"   id="enDisplay"></div>
           <div class="note" id="noteDisplay"></div>
-          <button class="audio-btn" id="audioBtnBack"
-            onclick="event.stopPropagation(); speakCard(fcCurrent, this)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+          <button class="audio-btn" onclick="event.stopPropagation(); speakCard(fcCurrent, this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-            </svg>
-            Listen
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>Listen
           </button>
           <span class="hint">Tap to flip back</span>
         </div>
@@ -547,46 +439,98 @@
       <button class="act-btn got"   id="gotBtn"   onclick="markGot()"   disabled>Got it &#10003;</button>
     </div>
 
-    <div class="kbd-hint">
-      <kbd>Space</kbd> flip &nbsp; <kbd>&larr;</kbd> again &nbsp; <kbd>&rarr;</kbd> got it
-    </div>
-
+    <div class="kbd-hint"><kbd>Space</kbd> flip &nbsp; <kbd>&larr;</kbd> again &nbsp; <kbd>&rarr;</kbd> got it</div>
   </div>
 
   <!-- ── Multiple Choice section ── -->
   <div class="section" id="mcSection">
-
-    <div class="mc-score">
-      <span class="cn" id="mcCorrectN">0</span> / <span id="mcTotalN">0</span> correct this session
-    </div>
+    <div class="mc-score"><span class="cn" id="mcCorrectN">0</span> / <span id="mcTotalN">0</span> correct this session</div>
 
     <div class="mc-question">
       <span class="face-label" id="mcCat"></span>
       <span class="nikud-tag"  id="mcNikudTag"></span>
       <div class="heb" id="mcHeb" dir="rtl"></div>
-      <button class="audio-btn" id="mcAudioBtn"
-        onclick="speakCard(mcCurrent, this)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+      <button class="audio-btn" onclick="speakCard(mcCurrent, this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-        </svg>
-        Listen
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg>Listen
       </button>
     </div>
 
     <div class="mc-choices" id="mcChoices"></div>
-
     <button class="mc-next" id="mcNext" onclick="nextMC()">Next &rarr;</button>
+  </div>
+
+  <!-- ── Alphabet section ── -->
+  <div class="section" id="alphSection">
+
+    <!-- Sub-tabs -->
+    <div class="alph-tabs" id="alphTabs">
+      <button class="alph-tab active" data-atab="consonants">Consonants</button>
+      <button class="alph-tab"        data-atab="vowels">Vowels</button>
+    </div>
+
+    <!-- Reference / Practice toggle -->
+    <div class="alph-view-row">
+      <button class="av-btn active" data-av="ref">Reference</button>
+      <button class="av-btn"        data-av="practice">Practice</button>
+    </div>
+
+    <!-- Reference grid (populated by JS) -->
+    <div class="ref-grid" id="refGrid"></div>
+
+    <!-- Disclaimer -->
+    <div class="alph-note" id="alphNote">
+      Cursive column uses Heebo (sans-serif) as a visual approximation — letterforms differ from handwritten ktav yaad. Verify stroke shapes with your class workbook.
+    </div>
+
+    <!-- Practice area -->
+    <div id="alphPracticeArea" style="display:none; width:100%; flex-direction:column; align-items:center; gap:1.125rem;">
+
+      <div class="alph-deck-label" id="alphDeckLabel"></div>
+
+      <div class="card-wrap">
+        <div class="card" id="alphCard">
+
+          <div class="face" id="alphFront">
+            <span class="face-label" id="alphFrontCat"></span>
+            <span class="form-tag"   id="alphFormFront"></span>
+            <div class="heb" id="alphFrontLetter" dir="rtl"></div>
+            <button class="audio-btn" onclick="event.stopPropagation(); speakAlphCurrent(this)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+              </svg>Listen
+            </button>
+            <span class="hint">Tap to reveal</span>
+          </div>
+
+          <div class="face face-back" id="alphBack">
+            <span class="face-label" id="alphBackCat"></span>
+            <div class="en"   id="alphBackName"></div>
+            <div class="note" id="alphBackSound"></div>
+            <span class="form-tag" id="alphFormBack"></span>
+            <div class="heb back-alt-letter" id="alphBackLetter" dir="rtl"></div>
+            <span class="hint">Tap to flip back</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="act-btn again" id="alphAgain" onclick="alphMarkAgain()" disabled>&#8617; Again</button>
+        <button class="act-btn got"   id="alphGot"   onclick="alphMarkGot()"   disabled>Got it &#10003;</button>
+      </div>
+
+    </div>
 
   </div>
 
   <!-- ── Completion (shared) ── -->
   <div class="completion" id="completion">
     <div class="completion-icon">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"/>
       </svg>
     </div>
@@ -598,66 +542,100 @@
 </main>
 
 <script>
-// ── Data ──────────────────────────────────────────────────────────────────────
+// ── Vocabulary data ───────────────────────────────────────────────────────────
 
 const CARDS = [
-  // Pronouns
-  { id:  1, cat: 'pronouns', heb: 'אֲנִי',          plain: 'אני',          en: 'I',                        note: null },
-  { id:  2, cat: 'pronouns', heb: 'אַתָּה',         plain: 'אתה',          en: 'You',                      note: 'masculine singular' },
-  { id:  3, cat: 'pronouns', heb: 'אַתְּ',          plain: 'את',           en: 'You',                      note: 'feminine singular' },
-  { id:  4, cat: 'pronouns', heb: 'הוּא',           plain: 'הוא',          en: 'He',                       note: null },
-  { id:  5, cat: 'pronouns', heb: 'הִיא',           plain: 'היא',          en: 'She',                      note: null },
-  { id:  6, cat: 'pronouns', heb: 'אֲנַחְנוּ',     plain: 'אנחנו',        en: 'We',                       note: null },
-  { id:  7, cat: 'pronouns', heb: 'אַתֶּם',         plain: 'אתם',          en: 'You',                      note: 'masculine plural' },
-  { id:  8, cat: 'pronouns', heb: 'אַתֶּן',         plain: 'אתן',          en: 'You',                      note: 'feminine plural' },
-  { id:  9, cat: 'pronouns', heb: 'הֵם',            plain: 'הם',           en: 'They',                     note: 'masculine' },
-  { id: 10, cat: 'pronouns', heb: 'הֵן',            plain: 'הן',           en: 'They',                     note: 'feminine' },
-
-  // Greetings
-  { id: 11, cat: 'greetings', heb: 'שָׁלוֹם',           plain: 'שלום',         en: 'Hello / Goodbye / Peace',  note: null },
-  { id: 12, cat: 'greetings', heb: 'בֹּקֶר טוֹב',       plain: 'בוקר טוב',     en: 'Good morning',             note: null },
-  { id: 13, cat: 'greetings', heb: 'צָהֳרַיִם טוֹבִים', plain: 'צהריים טובים', en: 'Good afternoon',           note: null },
-  { id: 14, cat: 'greetings', heb: 'עֶרֶב טוֹב',        plain: 'ערב טוב',      en: 'Good evening',             note: null },
-  { id: 15, cat: 'greetings', heb: 'לַיְלָה טוֹב',      plain: 'לילה טוב',     en: 'Good night',               note: null },
-  { id: 16, cat: 'greetings', heb: 'מַה שְּׁלוֹמְךָ',  plain: 'מה שלומך',     en: 'How are you?',             note: 'masculine' },
-  { id: 17, cat: 'greetings', heb: 'מַה שְּׁלוֹמֵךְ',  plain: 'מה שלומך',     en: 'How are you?',             note: 'feminine' },
-  { id: 18, cat: 'greetings', heb: 'בְּסֵדֶר',          plain: 'בסדר',         en: 'OK / Fine / Alright',      note: null },
-  { id: 19, cat: 'greetings', heb: 'לְהִתְרָאוֹת',     plain: 'להתראות',      en: 'See you / Goodbye',        note: null },
-  { id: 20, cat: 'greetings', heb: 'בְּבַקָּשָׁה',     plain: 'בבקשה',        en: "Please / You're welcome",  note: null },
-  { id: 21, cat: 'greetings', heb: 'תּוֹדָה',           plain: 'תודה',         en: 'Thank you',                note: null },
-  { id: 22, cat: 'greetings', heb: 'תּוֹדָה רַבָּה',   plain: 'תודה רבה',     en: 'Thank you very much',      note: null },
-
-  // Daily terms
-  { id: 23, cat: 'daily', heb: 'כֵּן',          plain: 'כן',        en: 'Yes',                   note: null },
-  { id: 24, cat: 'daily', heb: 'לֹא',           plain: 'לא',        en: 'No',                    note: null },
-  { id: 25, cat: 'daily', heb: 'סְלִיחָה',      plain: 'סליחה',     en: 'Excuse me / Sorry',     note: null },
-  { id: 26, cat: 'daily', heb: 'אֵיפֹה',        plain: 'איפה',      en: 'Where',                 note: null },
-  { id: 27, cat: 'daily', heb: 'מָה',           plain: 'מה',        en: 'What',                  note: null },
-  { id: 28, cat: 'daily', heb: 'מִי',           plain: 'מי',        en: 'Who',                   note: null },
-  { id: 29, cat: 'daily', heb: 'מָתַי',         plain: 'מתי',       en: 'When',                  note: null },
-  { id: 30, cat: 'daily', heb: 'לָמָּה',        plain: 'למה',       en: 'Why',                   note: null },
-  { id: 31, cat: 'daily', heb: 'כַּמָּה',       plain: 'כמה',       en: 'How much / How many',   note: null },
-  { id: 32, cat: 'daily', heb: 'אֵיךְ',         plain: 'איך',       en: 'How',                   note: null },
-  { id: 33, cat: 'daily', heb: 'עֶזְרָה',       plain: 'עזרה',      en: 'Help',                  note: null },
-  { id: 34, cat: 'daily', heb: 'מַיִם',         plain: 'מים',       en: 'Water',                 note: null },
-  { id: 35, cat: 'daily', heb: 'אֹכֶל',         plain: 'אוכל',      en: 'Food',                  note: null },
-  { id: 36, cat: 'daily', heb: 'בַּיִת',        plain: 'בית',       en: 'Home / House',          note: null },
-  { id: 37, cat: 'daily', heb: 'שֵׁם',          plain: 'שם',        en: 'Name',                  note: null },
-  { id: 38, cat: 'daily', heb: 'יוֹם',          plain: 'יום',       en: 'Day',                   note: null },
-  { id: 39, cat: 'daily', heb: 'שָׁנָה',        plain: 'שנה',       en: 'Year',                  note: null },
-  { id: 40, cat: 'daily', heb: 'טוֹב',          plain: 'טוב',       en: 'Good',                  note: null },
-  { id: 41, cat: 'daily', heb: 'חָבֵר',         plain: 'חבר',       en: 'Friend',                note: 'masculine' },
-  { id: 42, cat: 'daily', heb: 'חֲבֵרָה',       plain: 'חברה',      en: 'Friend',                note: 'feminine' },
-  { id: 43, cat: 'daily', heb: 'כֶּסֶף',        plain: 'כסף',       en: 'Money',                 note: null },
-  { id: 44, cat: 'daily', heb: 'שָׁעָה',        plain: 'שעה',       en: "Hour / O'clock",        note: null },
-  { id: 45, cat: 'daily', heb: 'רְחוֹב',        plain: 'רחוב',      en: 'Street',                note: null },
+  { id:  1, cat:'pronouns',  heb:'אֲנִי',          plain:'אני',          en:'I',                        note:null },
+  { id:  2, cat:'pronouns',  heb:'אַתָּה',         plain:'אתה',          en:'You',                      note:'masculine singular' },
+  { id:  3, cat:'pronouns',  heb:'אַתְּ',          plain:'את',           en:'You',                      note:'feminine singular' },
+  { id:  4, cat:'pronouns',  heb:'הוּא',           plain:'הוא',          en:'He',                       note:null },
+  { id:  5, cat:'pronouns',  heb:'הִיא',           plain:'היא',          en:'She',                      note:null },
+  { id:  6, cat:'pronouns',  heb:'אֲנַחְנוּ',     plain:'אנחנו',        en:'We',                       note:null },
+  { id:  7, cat:'pronouns',  heb:'אַתֶּם',         plain:'אתם',          en:'You',                      note:'masculine plural' },
+  { id:  8, cat:'pronouns',  heb:'אַתֶּן',         plain:'אתן',          en:'You',                      note:'feminine plural' },
+  { id:  9, cat:'pronouns',  heb:'הֵם',            plain:'הם',           en:'They',                     note:'masculine' },
+  { id: 10, cat:'pronouns',  heb:'הֵן',            plain:'הן',           en:'They',                     note:'feminine' },
+  { id: 11, cat:'greetings', heb:'שָׁלוֹם',           plain:'שלום',         en:'Hello / Goodbye / Peace',  note:null },
+  { id: 12, cat:'greetings', heb:'בֹּקֶר טוֹב',       plain:'בוקר טוב',     en:'Good morning',             note:null },
+  { id: 13, cat:'greetings', heb:'צָהֳרַיִם טוֹבִים', plain:'צהריים טובים', en:'Good afternoon',           note:null },
+  { id: 14, cat:'greetings', heb:'עֶרֶב טוֹב',        plain:'ערב טוב',      en:'Good evening',             note:null },
+  { id: 15, cat:'greetings', heb:'לַיְלָה טוֹב',      plain:'לילה טוב',     en:'Good night',               note:null },
+  { id: 16, cat:'greetings', heb:'מַה שְּׁלוֹמְךָ',  plain:'מה שלומך',     en:'How are you?',             note:'masculine' },
+  { id: 17, cat:'greetings', heb:'מַה שְּׁלוֹמֵךְ',  plain:'מה שלומך',     en:'How are you?',             note:'feminine' },
+  { id: 18, cat:'greetings', heb:'בְּסֵדֶר',          plain:'בסדר',         en:'OK / Fine / Alright',      note:null },
+  { id: 19, cat:'greetings', heb:'לְהִתְרָאוֹת',     plain:'להתראות',      en:'See you / Goodbye',        note:null },
+  { id: 20, cat:'greetings', heb:'בְּבַקָּשָׁה',     plain:'בבקשה',        en:"Please / You're welcome",  note:null },
+  { id: 21, cat:'greetings', heb:'תּוֹדָה',           plain:'תודה',         en:'Thank you',                note:null },
+  { id: 22, cat:'greetings', heb:'תּוֹדָה רַבָּה',   plain:'תודה רבה',     en:'Thank you very much',      note:null },
+  { id: 23, cat:'daily', heb:'כֵּן',          plain:'כן',        en:'Yes',                   note:null },
+  { id: 24, cat:'daily', heb:'לֹא',           plain:'לא',        en:'No',                    note:null },
+  { id: 25, cat:'daily', heb:'סְלִיחָה',      plain:'סליחה',     en:'Excuse me / Sorry',     note:null },
+  { id: 26, cat:'daily', heb:'אֵיפֹה',        plain:'איפה',      en:'Where',                 note:null },
+  { id: 27, cat:'daily', heb:'מָה',           plain:'מה',        en:'What',                  note:null },
+  { id: 28, cat:'daily', heb:'מִי',           plain:'מי',        en:'Who',                   note:null },
+  { id: 29, cat:'daily', heb:'מָתַי',         plain:'מתי',       en:'When',                  note:null },
+  { id: 30, cat:'daily', heb:'לָמָּה',        plain:'למה',       en:'Why',                   note:null },
+  { id: 31, cat:'daily', heb:'כַּמָּה',       plain:'כמה',       en:'How much / How many',   note:null },
+  { id: 32, cat:'daily', heb:'אֵיךְ',         plain:'איך',       en:'How',                   note:null },
+  { id: 33, cat:'daily', heb:'עֶזְרָה',       plain:'עזרה',      en:'Help',                  note:null },
+  { id: 34, cat:'daily', heb:'מַיִם',         plain:'מים',       en:'Water',                 note:null },
+  { id: 35, cat:'daily', heb:'אֹכֶל',         plain:'אוכל',      en:'Food',                  note:null },
+  { id: 36, cat:'daily', heb:'בַּיִת',        plain:'בית',       en:'Home / House',          note:null },
+  { id: 37, cat:'daily', heb:'שֵׁם',          plain:'שם',        en:'Name',                  note:null },
+  { id: 38, cat:'daily', heb:'יוֹם',          plain:'יום',       en:'Day',                   note:null },
+  { id: 39, cat:'daily', heb:'שָׁנָה',        plain:'שנה',       en:'Year',                  note:null },
+  { id: 40, cat:'daily', heb:'טוֹב',          plain:'טוב',       en:'Good',                  note:null },
+  { id: 41, cat:'daily', heb:'חָבֵר',         plain:'חבר',       en:'Friend',                note:'masculine' },
+  { id: 42, cat:'daily', heb:'חֲבֵרָה',       plain:'חברה',      en:'Friend',                note:'feminine' },
+  { id: 43, cat:'daily', heb:'כֶּסֶף',        plain:'כסף',       en:'Money',                 note:null },
+  { id: 44, cat:'daily', heb:'שָׁעָה',        plain:'שעה',       en:"Hour / O'clock",        note:null },
+  { id: 45, cat:'daily', heb:'רְחוֹב',        plain:'רחוב',      en:'Street',                note:null },
 ];
 
-const CAT_LABELS = { pronouns: 'Pronoun', greetings: 'Greeting', daily: 'Daily Term' };
+// ── Alphabet data ─────────────────────────────────────────────────────────────
+
+const CONSONANTS = [
+  { id:'c01', type:'consonant', num:1,  letter:'א', name:'Alef',       hebName:'אָלֶף',  sound:'silent',             final:null },
+  { id:'c02', type:'consonant', num:2,  letter:'ב', name:'Bet / Vet',  hebName:'בֵּית',  sound:'b / v',              final:null },
+  { id:'c03', type:'consonant', num:3,  letter:'ג', name:'Gimel',      hebName:'גִּימֶל',sound:'g',                  final:null },
+  { id:'c04', type:'consonant', num:4,  letter:'ד', name:'Dalet',      hebName:'דָּלֶת', sound:'d',                  final:null },
+  { id:'c05', type:'consonant', num:5,  letter:'ה', name:'He',         hebName:'הֵא',    sound:'h',                  final:null },
+  { id:'c06', type:'consonant', num:6,  letter:'ו', name:'Vav',        hebName:'וָו',    sound:'v',                  final:null },
+  { id:'c07', type:'consonant', num:7,  letter:'ז', name:'Zayin',      hebName:'זַיִן',  sound:'z',                  final:null },
+  { id:'c08', type:'consonant', num:8,  letter:'ח', name:'Chet',       hebName:'חֵית',   sound:'ch (guttural)',       final:null },
+  { id:'c09', type:'consonant', num:9,  letter:'ט', name:'Tet',        hebName:'טֵית',   sound:'t',                  final:null },
+  { id:'c10', type:'consonant', num:10, letter:'י', name:'Yod',        hebName:'יוֹד',   sound:'y',                  final:null },
+  { id:'c11', type:'consonant', num:11, letter:'כ', name:'Kaf / Khaf', hebName:'כַּף',   sound:'k / kh',             final:'ך' },
+  { id:'c12', type:'consonant', num:12, letter:'ל', name:'Lamed',      hebName:'לָמֶד',  sound:'l',                  final:null },
+  { id:'c13', type:'consonant', num:13, letter:'מ', name:'Mem',        hebName:'מֵם',    sound:'m',                  final:'ם' },
+  { id:'c14', type:'consonant', num:14, letter:'נ', name:'Nun',        hebName:'נוּן',   sound:'n',                  final:'ן' },
+  { id:'c15', type:'consonant', num:15, letter:'ס', name:'Samech',     hebName:'סָמֶך',  sound:'s',                  final:null },
+  { id:'c16', type:'consonant', num:16, letter:'ע', name:'Ayin',       hebName:'עַיִן',  sound:'silent / guttural',  final:null },
+  { id:'c17', type:'consonant', num:17, letter:'פ', name:'Pe / Fe',    hebName:'פֵּא',   sound:'p / f',              final:'ף' },
+  { id:'c18', type:'consonant', num:18, letter:'צ', name:'Tzadi',      hebName:'צָדִי',  sound:'tz',                 final:'ץ' },
+  { id:'c19', type:'consonant', num:19, letter:'ק', name:'Kof',        hebName:'קוֹף',   sound:'k',                  final:null },
+  { id:'c20', type:'consonant', num:20, letter:'ר', name:'Resh',       hebName:'רֵישׁ',  sound:'r',                  final:null },
+  { id:'c21', type:'consonant', num:21, letter:'ש', name:'Shin / Sin', hebName:'שִׁין',  sound:'sh / s',             final:null },
+  { id:'c22', type:'consonant', num:22, letter:'ת', name:'Tav',        hebName:'תָּו',   sound:'t',                  final:null },
+];
+
+const VOWELS = [
+  { id:'v01', type:'vowel', letter:'אַ', name:'Patach', hebName:'פַּתָּח', sound:'ah (short)' },
+  { id:'v02', type:'vowel', letter:'אָ', name:'Kamatz', hebName:'קָמָץ',  sound:'ah (long)' },
+  { id:'v03', type:'vowel', letter:'אֵ', name:'Tzere',  hebName:'צֵרֵה',  sound:'ay / ey' },
+  { id:'v04', type:'vowel', letter:'אֶ', name:'Segol',  hebName:'סֶגוֹל', sound:'eh' },
+  { id:'v05', type:'vowel', letter:'אִ', name:'Hirik',  hebName:'חִירִיק',sound:'ee' },
+  { id:'v06', type:'vowel', letter:'אֹ', name:'Holam',  hebName:'חוֹלָם', sound:'oh' },
+  { id:'v07', type:'vowel', letter:'אוּ',name:'Shuruk', hebName:'שּׁוּרוּק',sound:'oo' },
+  { id:'v08', type:'vowel', letter:'אֻ', name:'Kubutz', hebName:'קֻבּוּץ',sound:'oo (short)' },
+  { id:'v09', type:'vowel', letter:'אְ', name:'Shva',   hebName:'שְׁוָא',  sound:'silent / brief e' },
+];
+
+const CAT_LABELS = { pronouns:'Pronoun', greetings:'Greeting', daily:'Daily Term' };
 
 // ── Shared helpers ─────────────────────────────────────────────────────────────
 
-function $ (id) { return document.getElementById(id); }
+function $(id) { return document.getElementById(id); }
 
 function shuffle(arr) {
   const a = [...arr];
@@ -669,6 +647,7 @@ function shuffle(arr) {
 }
 
 function optionText(card) {
+  if (card.type === 'consonant' || card.type === 'vowel') return card.name;
   return card.note ? `${card.en} (${card.note})` : card.en;
 }
 
@@ -676,15 +655,11 @@ function speakCard(card, btnEl) {
   if (!card) return;
   if (!window.speechSynthesis) { alert('Audio not supported in this browser.'); return; }
   window.speechSynthesis.cancel();
-  const utt  = new SpeechSynthesisUtterance(card.heb);
-  utt.lang   = 'he-IL';
-  utt.rate   = 0.82;
-  const heV  = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('he'));
+  const utt = new SpeechSynthesisUtterance(card.heb || card.letter);
+  utt.lang  = 'he-IL'; utt.rate = 0.82;
+  const heV = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('he'));
   if (heV) utt.voice = heV;
-  if (btnEl) {
-    btnEl.classList.add('playing');
-    utt.onend = () => btnEl.classList.remove('playing');
-  }
+  if (btnEl) { btnEl.classList.add('playing'); utt.onend = () => btnEl.classList.remove('playing'); }
   speechSynthesis.speak(utt);
 }
 
@@ -693,9 +668,7 @@ function speakCard(card, btnEl) {
 let activeMode = 'fc';
 let activeCat  = 'all';
 
-function pool() {
-  return activeCat === 'all' ? CARDS : CARDS.filter(c => c.cat === activeCat);
-}
+function pool() { return activeCat === 'all' ? CARDS : CARDS.filter(c => c.cat === activeCat); }
 
 function updateProgress(learned, total) {
   $('learnedN').textContent = learned;
@@ -705,45 +678,28 @@ function updateProgress(learned, total) {
 
 // ── Flashcard mode ─────────────────────────────────────────────────────────────
 
-let fcDeck    = [];
-let fcLearned = new Set();
-let fcCurrent = null;
-let fcNikud   = true;
-let fcFlipped = false;
+let fcDeck = [], fcLearned = new Set(), fcCurrent = null, fcNikud = true, fcFlipped = false;
 
 function initFC() {
-  fcDeck    = shuffle(pool());
-  fcLearned.clear();
-  fcFlipped = false;
-  showFC();
+  fcDeck = shuffle(pool()); fcLearned.clear(); fcFlipped = false; showFC();
 }
 
 function showFC() {
-  const comp = $('completion');
-  comp.classList.remove('show');
-
+  $('completion').classList.remove('show');
   const total = fcDeck.length + fcLearned.size;
   updateProgress(fcLearned.size, total);
-  $('deckLabel').textContent = fcDeck.length === 0
-    ? 'All cards learned!'
+  $('deckLabel').textContent = fcDeck.length === 0 ? 'All cards learned!'
     : `${fcDeck.length} card${fcDeck.length !== 1 ? 's' : ''} remaining`;
 
   if (fcDeck.length === 0) {
-    comp.classList.add('show');
-    $('completionMsg').textContent =
-      `You worked through all ${fcLearned.size} cards. Keep it up!`;
+    $('completion').classList.add('show');
+    $('completionMsg').textContent = `You worked through all ${fcLearned.size} cards. Keep it up!`;
     return;
   }
 
-  fcCurrent = fcDeck[0];
-  fcNikud   = Math.random() < 0.55;
-  fcFlipped = false;
-
+  fcCurrent = fcDeck[0]; fcNikud = Math.random() < 0.55; fcFlipped = false;
   const card = $('card');
-  card.style.transition = 'none';
-  card.classList.remove('flipped');
-  card.offsetHeight;
-  card.style.transition = '';
+  card.style.transition = 'none'; card.classList.remove('flipped'); card.offsetHeight; card.style.transition = '';
 
   const lbl = CAT_LABELS[fcCurrent.cat];
   $('frontCat').textContent    = lbl;
@@ -752,172 +708,297 @@ function showFC() {
   $('hebDisplay').textContent  = fcNikud ? fcCurrent.heb : fcCurrent.plain;
   $('enDisplay').textContent   = fcCurrent.en;
   $('noteDisplay').textContent = fcCurrent.note ? `(${fcCurrent.note})` : '';
-
-  $('againBtn').disabled = true;
-  $('gotBtn').disabled   = true;
+  $('againBtn').disabled = true; $('gotBtn').disabled = true;
 }
 
 function fcFlip() {
   if (!fcCurrent) return;
   fcFlipped = !fcFlipped;
   $('card').classList.toggle('flipped', fcFlipped);
-  $('againBtn').disabled = !fcFlipped;
-  $('gotBtn').disabled   = !fcFlipped;
+  $('againBtn').disabled = !fcFlipped; $('gotBtn').disabled = !fcFlipped;
 }
 
 function markGot() {
   if (!fcCurrent || !fcFlipped) return;
-  fcLearned.add(fcCurrent.id);
-  fcDeck.shift();
-  showFC();
+  fcLearned.add(fcCurrent.id); fcDeck.shift(); showFC();
 }
 
 function markAgain() {
   if (!fcCurrent || !fcFlipped) return;
-  const c   = fcDeck.shift();
-  const pos = fcDeck.length === 0 ? 0
-    : 1 + Math.floor(Math.random() * Math.min(fcDeck.length, 4));
-  fcDeck.splice(pos, 0, c);
-  showFC();
+  const c = fcDeck.shift();
+  const pos = fcDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(fcDeck.length, 4));
+  fcDeck.splice(pos, 0, c); showFC();
 }
 
 // ── Multiple Choice mode ───────────────────────────────────────────────────────
 
-let mcDeck     = [];
-let mcLearned  = new Set();
-let mcCurrent  = null;
-let mcCorrect  = 0;
-let mcTotal    = 0;
-let mcAnswered = false;
+let mcDeck = [], mcLearned = new Set(), mcCurrent = null, mcCorrect = 0, mcTotal = 0, mcAnswered = false;
 
-function initMC() {
-  mcDeck    = shuffle(pool());
-  mcLearned.clear();
-  mcCorrect = 0;
-  mcTotal   = 0;
-  showMC();
-}
+function initMC() { mcDeck = shuffle(pool()); mcLearned.clear(); mcCorrect = 0; mcTotal = 0; showMC(); }
 
 function buildOptions(correct) {
-  const correctTxt = optionText(correct);
-  const distractors = shuffle(
-    pool().filter(c => c.id !== correct.id && optionText(c) !== correctTxt)
-  ).slice(0, 3);
-
-  if (distractors.length < 3) {
-    const extra = shuffle(
-      CARDS.filter(c =>
-        c.id !== correct.id &&
-        optionText(c) !== correctTxt &&
-        !distractors.find(d => d.id === c.id)
-      )
-    ).slice(0, 3 - distractors.length);
-    distractors.push(...extra);
+  const ct = optionText(correct);
+  let dist = shuffle(pool().filter(c => c.id !== correct.id && optionText(c) !== ct)).slice(0, 3);
+  if (dist.length < 3) {
+    const extra = shuffle(CARDS.filter(c => c.id !== correct.id && optionText(c) !== ct && !dist.find(d => d.id === c.id))).slice(0, 3 - dist.length);
+    dist.push(...extra);
   }
-
-  return shuffle([correct, ...distractors]);
+  return shuffle([correct, ...dist]);
 }
 
 function showMC() {
-  const comp = $('completion');
-  comp.classList.remove('show');
-
+  $('completion').classList.remove('show');
   const total = mcDeck.length + mcLearned.size;
   updateProgress(mcLearned.size, total);
-  $('deckLabel').textContent = mcDeck.length === 0
-    ? 'All cards learned!'
+  $('deckLabel').textContent = mcDeck.length === 0 ? 'All cards learned!'
     : `${mcDeck.length} card${mcDeck.length !== 1 ? 's' : ''} remaining`;
-  $('mcCorrectN').textContent = mcCorrect;
-  $('mcTotalN').textContent   = mcTotal;
+  $('mcCorrectN').textContent = mcCorrect; $('mcTotalN').textContent = mcTotal;
 
   if (mcDeck.length === 0) {
-    comp.classList.add('show');
-    $('completionMsg').textContent =
-      `You answered ${mcCorrect} of ${mcTotal} correctly. Keep it up!`;
+    $('completion').classList.add('show');
+    $('completionMsg').textContent = `You answered ${mcCorrect} of ${mcTotal} correctly. Keep it up!`;
     return;
   }
 
-  mcCurrent  = mcDeck[0];
-  mcAnswered = false;
-
-  const mcNikud = Math.random() < 0.55;
+  mcCurrent = mcDeck[0]; mcAnswered = false;
+  const nik = Math.random() < 0.55;
   $('mcCat').textContent      = CAT_LABELS[mcCurrent.cat];
-  $('mcNikudTag').textContent = mcNikud ? 'נִקּוּד' : 'ללא ניקוד';
-  $('mcHeb').textContent      = mcNikud ? mcCurrent.heb : mcCurrent.plain;
+  $('mcNikudTag').textContent = nik ? 'נִקּוּד' : 'ללא ניקוד';
+  $('mcHeb').textContent      = nik ? mcCurrent.heb : mcCurrent.plain;
 
-  const options   = buildOptions(mcCurrent);
-  const choicesEl = $('mcChoices');
-  choicesEl.innerHTML = '';
-
-  options.forEach(opt => {
+  const opts = buildOptions(mcCurrent);
+  $('mcChoices').innerHTML = '';
+  opts.forEach(opt => {
     const btn = document.createElement('button');
-    btn.className   = 'choice-btn';
-    btn.textContent = optionText(opt);
-    btn.dataset.id  = opt.id;
-    btn.onclick     = () => selectChoice(opt);
-    choicesEl.appendChild(btn);
+    btn.className = 'choice-btn'; btn.textContent = optionText(opt); btn.dataset.id = opt.id;
+    btn.onclick = () => selectChoice(opt);
+    $('mcChoices').appendChild(btn);
   });
-
   $('mcNext').classList.remove('visible');
 }
 
 function selectChoice(chosen) {
   if (mcAnswered) return;
-  mcAnswered = true;
-  mcTotal++;
-
-  const isCorrect = chosen.id === mcCurrent.id;
-  if (isCorrect) mcCorrect++;
-
+  mcAnswered = true; mcTotal++;
+  const ok = chosen.id === mcCurrent.id;
+  if (ok) mcCorrect++;
   $('mcChoices').querySelectorAll('.choice-btn').forEach(btn => {
     btn.disabled = true;
     const id = parseInt(btn.dataset.id);
     if (id === mcCurrent.id) btn.classList.add('correct');
     else if (id === chosen.id) btn.classList.add('wrong');
   });
-
-  $('mcCorrectN').textContent = mcCorrect;
-  $('mcTotalN').textContent   = mcTotal;
-
-  if (isCorrect) {
-    mcLearned.add(mcCurrent.id);
-    mcDeck.shift();
+  $('mcCorrectN').textContent = mcCorrect; $('mcTotalN').textContent = mcTotal;
+  if (ok) {
+    mcLearned.add(mcCurrent.id); mcDeck.shift();
     updateProgress(mcLearned.size, mcDeck.length + mcLearned.size);
-    $('deckLabel').textContent = mcDeck.length === 0
-      ? 'All cards learned!'
+    $('deckLabel').textContent = mcDeck.length === 0 ? 'All cards learned!'
       : `${mcDeck.length} card${mcDeck.length !== 1 ? 's' : ''} remaining`;
   } else {
-    const c   = mcDeck.shift();
-    const pos = mcDeck.length === 0 ? 0
-      : 1 + Math.floor(Math.random() * Math.min(mcDeck.length, 4));
+    const c = mcDeck.shift();
+    const pos = mcDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(mcDeck.length, 4));
     mcDeck.splice(pos, 0, c);
   }
-
   $('mcNext').classList.add('visible');
 }
 
 function nextMC() { showMC(); }
 
+// ── Alphabet mode ─────────────────────────────────────────────────────────────
+
+let activeAlphTab = 'consonants';
+let activeAlphView = 'ref';
+let alphDeck = [], alphLearned = new Set(), alphCurrent = null;
+let alphShowPrint = true, alphFlipped = false;
+
+function alphPool() { return activeAlphTab === 'consonants' ? CONSONANTS : VOWELS; }
+
+function initAlph() {
+  renderRefGrid();
+  setAlphView('ref');
+  // reset practice
+  alphDeck = []; alphLearned.clear();
+  $('pillLabel').textContent = 'letters';
+  updateProgress(0, alphPool().length);
+  $('deckLabel').textContent = '';
+}
+
+function renderRefGrid() {
+  const data = alphPool();
+  const grid = $('refGrid');
+  grid.innerHTML = '';
+  data.forEach(item => {
+    const cell = document.createElement('div');
+    cell.className = 'letter-card';
+    if (item.type === 'consonant') {
+      const finalNote = item.final ? `<div class="lc-final">final: ${item.final}</div>` : '';
+      cell.innerHTML = `
+        <div class="lc-num">${item.num}</div>
+        <div class="lc-print">${item.letter}</div>
+        <div class="lc-name">${item.name}</div>
+        <div class="lc-sound">${item.sound}</div>
+        ${finalNote}
+        <div class="lc-divider"></div>
+        <div class="lc-cursive">${item.letter}</div>
+        <div class="lc-cursive-label">cursive ≈</div>
+      `;
+    } else {
+      cell.innerHTML = `
+        <div class="lc-print">${item.letter}</div>
+        <div class="lc-name">${item.name}</div>
+        <div class="lc-sound">${item.sound}</div>
+      `;
+    }
+    grid.appendChild(cell);
+  });
+}
+
+function setAlphView(view) {
+  activeAlphView = view;
+  document.querySelectorAll('.av-btn').forEach(b => b.classList.toggle('active', b.dataset.av === view));
+  $('refGrid').style.display        = view === 'ref'      ? '' : 'none';
+  $('alphNote').style.display       = view === 'ref'      ? '' : 'none';
+  $('alphPracticeArea').style.display = view === 'practice' ? 'flex' : 'none';
+  if (view === 'practice') initAlphPractice();
+}
+
+function initAlphPractice() {
+  alphDeck = shuffle(alphPool()); alphLearned.clear(); alphFlipped = false;
+  $('completion').classList.remove('show');
+  updateProgress(0, alphDeck.length);
+  showAlphCard();
+}
+
+function showAlphCard() {
+  $('completion').classList.remove('show');
+  const total = alphDeck.length + alphLearned.size;
+  updateProgress(alphLearned.size, total);
+  $('alphDeckLabel').textContent = alphDeck.length === 0 ? 'All letters learned!'
+    : `${alphDeck.length} remaining`;
+
+  if (alphDeck.length === 0) {
+    $('completion').classList.add('show');
+    $('completionMsg').textContent = `You worked through all ${alphLearned.size} ${activeAlphTab}. Well done!`;
+    return;
+  }
+
+  alphCurrent  = alphDeck[0];
+  // For consonants, randomly show print or cursive on front; for vowels always show print
+  alphShowPrint = alphCurrent.type === 'vowel' ? true : Math.random() < 0.5;
+  alphFlipped  = false;
+
+  const aCard = $('alphCard');
+  aCard.style.transition = 'none'; aCard.classList.remove('flipped'); aCard.offsetHeight; aCard.style.transition = '';
+
+  const catLabel = alphCurrent.type === 'consonant' ? 'Consonant' : 'Vowel';
+  $('alphFrontCat').textContent = catLabel;
+  $('alphBackCat').textContent  = catLabel;
+
+  // Front: the chosen form
+  const frontEl = $('alphFrontLetter');
+  frontEl.textContent = alphCurrent.letter;
+  if (alphShowPrint) {
+    frontEl.className = 'heb';
+    $('alphFormFront').textContent = 'Print';
+    $('alphFormFront').className   = 'form-tag';
+  } else {
+    frontEl.className = 'heb cursive-font';
+    $('alphFormFront').textContent = 'Cursive \u2248';
+    $('alphFormFront').className   = 'form-tag cursive-tag';
+  }
+
+  // Back: name + sound + the OTHER form (only for consonants)
+  $('alphBackName').textContent  = alphCurrent.name;
+  $('alphBackSound').textContent = alphCurrent.sound;
+
+  const backLetterEl = $('alphBackLetter');
+  if (alphCurrent.type === 'consonant') {
+    backLetterEl.textContent = alphCurrent.letter;
+    if (alphShowPrint) {
+      // front was print → back shows cursive
+      backLetterEl.className = 'heb back-alt-letter cursive-font';
+      $('alphFormBack').textContent = 'Cursive \u2248';
+      $('alphFormBack').className   = 'form-tag cursive-tag';
+    } else {
+      // front was cursive → back shows print
+      backLetterEl.className = 'heb back-alt-letter';
+      $('alphFormBack').textContent = 'Print';
+      $('alphFormBack').className   = 'form-tag';
+    }
+    backLetterEl.style.display  = '';
+    $('alphFormBack').style.display = '';
+  } else {
+    backLetterEl.style.display  = 'none';
+    $('alphFormBack').style.display = 'none';
+  }
+
+  $('alphAgain').disabled = true; $('alphGot').disabled = true;
+}
+
+function alphFlipCard() {
+  if (!alphCurrent) return;
+  alphFlipped = !alphFlipped;
+  $('alphCard').classList.toggle('flipped', alphFlipped);
+  $('alphAgain').disabled = !alphFlipped; $('alphGot').disabled = !alphFlipped;
+}
+
+function alphMarkGot() {
+  if (!alphCurrent || !alphFlipped) return;
+  alphLearned.add(alphCurrent.id); alphDeck.shift(); showAlphCard();
+}
+
+function alphMarkAgain() {
+  if (!alphCurrent || !alphFlipped) return;
+  const c = alphDeck.shift();
+  const pos = alphDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(alphDeck.length, 4));
+  alphDeck.splice(pos, 0, c); showAlphCard();
+}
+
+function speakAlphCurrent(btnEl) {
+  if (!alphCurrent) return;
+  if (!window.speechSynthesis) { alert('Audio not supported in this browser.'); return; }
+  window.speechSynthesis.cancel();
+  const text = alphCurrent.hebName || alphCurrent.letter;
+  const utt  = new SpeechSynthesisUtterance(text);
+  utt.lang   = 'he-IL'; utt.rate = 0.8;
+  const heV  = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('he'));
+  if (heV) utt.voice = heV;
+  if (btnEl) { btnEl.classList.add('playing'); utt.onend = () => btnEl.classList.remove('playing'); }
+  speechSynthesis.speak(utt);
+}
+
 // ── Session restart ────────────────────────────────────────────────────────────
 
 function restartSession() {
   $('completion').classList.remove('show');
-  if (activeMode === 'fc') initFC();
-  else initMC();
+  if (activeMode === 'fc')   initFC();
+  else if (activeMode === 'mc')   initMC();
+  else if (activeMode === 'alph') {
+    if (activeAlphView === 'practice') initAlphPractice();
+    else initAlph();
+  }
 }
 
 // ── Mode switching ─────────────────────────────────────────────────────────────
 
 function setMode(mode) {
   activeMode = mode;
-  document.querySelectorAll('.mode-btn').forEach(b =>
-    b.classList.toggle('active', b.dataset.mode === mode)
-  );
-  $('fcSection').classList.toggle('active', mode === 'fc');
-  $('mcSection').classList.toggle('active', mode === 'mc');
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  $('fcSection').classList.toggle('active',   mode === 'fc');
+  $('mcSection').classList.toggle('active',   mode === 'mc');
+  $('alphSection').classList.toggle('active', mode === 'alph');
   $('completion').classList.remove('show');
-  if (mode === 'fc') initFC();
-  else initMC();
+
+  // Category tabs + bar visible only in vocab modes
+  const isVocab = mode === 'fc' || mode === 'mc';
+  $('cats').style.display     = isVocab ? '' : 'none';
+  $('barTrack').style.display = '';
+  $('deckLabel').style.display = '';
+  $('pillLabel').textContent  = mode === 'alph' ? 'letters' : 'learned';
+
+  if (mode === 'fc')   initFC();
+  else if (mode === 'mc')   initMC();
+  else if (mode === 'alph') initAlph();
 }
 
 // ── Events ─────────────────────────────────────────────────────────────────────
@@ -933,23 +1014,41 @@ $('cats').addEventListener('click', e => {
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeCat = btn.dataset.cat;
-  if (activeMode === 'fc') initFC();
-  else initMC();
+  if (activeMode === 'fc') initFC(); else initMC();
+});
+
+$('alphTabs').addEventListener('click', e => {
+  const btn = e.target.closest('.alph-tab');
+  if (!btn || btn.dataset.atab === activeAlphTab) return;
+  document.querySelectorAll('.alph-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeAlphTab = btn.dataset.atab;
+  initAlph();
+});
+
+document.querySelector('.alph-view-row').addEventListener('click', e => {
+  const btn = e.target.closest('.av-btn');
+  if (btn && btn.dataset.av !== activeAlphView) setAlphView(btn.dataset.av);
 });
 
 $('card').addEventListener('click', fcFlip);
+$('alphCard').addEventListener('click', alphFlipCard);
 
 document.addEventListener('keydown', e => {
-  if (activeMode !== 'fc') return;
   if (e.target.tagName === 'BUTTON') return;
-  if (e.code === 'Space')      { e.preventDefault(); fcFlip(); }
-  if (e.code === 'ArrowRight') { e.preventDefault(); if (fcFlipped) markGot(); }
-  if (e.code === 'ArrowLeft')  { e.preventDefault(); if (fcFlipped) markAgain(); }
+  if (activeMode === 'fc') {
+    if (e.code === 'Space')      { e.preventDefault(); fcFlip(); }
+    if (e.code === 'ArrowRight') { e.preventDefault(); if (fcFlipped) markGot(); }
+    if (e.code === 'ArrowLeft')  { e.preventDefault(); if (fcFlipped) markAgain(); }
+  }
+  if (activeMode === 'alph' && activeAlphView === 'practice') {
+    if (e.code === 'Space')      { e.preventDefault(); alphFlipCard(); }
+    if (e.code === 'ArrowRight') { e.preventDefault(); if (alphFlipped) alphMarkGot(); }
+    if (e.code === 'ArrowLeft')  { e.preventDefault(); if (alphFlipped) alphMarkAgain(); }
+  }
 });
 
-if (speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = () => {};
-}
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = () => {};
 
 // ── Boot ───────────────────────────────────────────────────────────────────────
 
