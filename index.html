@@ -746,11 +746,11 @@ function showFC() {
   card.style.transition = '';
 
   const lbl = CAT_LABELS[fcCurrent.cat];
-  $('frontCat').textContent  = lbl;
-  $('backCat').textContent   = lbl;
-  $('nikudTag').textContent  = fcNikud ? 'נִקּוּד' : 'ללא ניקוד';
-  $('hebDisplay').textContent = fcNikud ? fcCurrent.heb : fcCurrent.plain;
-  $('enDisplay').textContent  = fcCurrent.en;
+  $('frontCat').textContent    = lbl;
+  $('backCat').textContent     = lbl;
+  $('nikudTag').textContent    = fcNikud ? 'נִקּוּד' : 'ללא ניקוד';
+  $('hebDisplay').textContent  = fcNikud ? fcCurrent.heb : fcCurrent.plain;
+  $('enDisplay').textContent   = fcCurrent.en;
   $('noteDisplay').textContent = fcCurrent.note ? `(${fcCurrent.note})` : '';
 
   $('againBtn').disabled = true;
@@ -786,7 +786,6 @@ function markAgain() {
 let mcDeck     = [];
 let mcLearned  = new Set();
 let mcCurrent  = null;
-let mcNikud    = true;
 let mcCorrect  = 0;
 let mcTotal    = 0;
 let mcAnswered = false;
@@ -801,7 +800,6 @@ function initMC() {
 
 function buildOptions(correct) {
   const correctTxt = optionText(correct);
-  // pull distractors from pool first, then all cards if needed
   const distractors = shuffle(
     pool().filter(c => c.id !== correct.id && optionText(c) !== correctTxt)
   ).slice(0, 3);
@@ -840,15 +838,15 @@ function showMC() {
   }
 
   mcCurrent  = mcDeck[0];
-  mcNikud    = Math.random() < 0.55;
   mcAnswered = false;
 
-  $('mcCat').textContent     = CAT_LABELS[mcCurrent.cat];
+  const mcNikud = Math.random() < 0.55;
+  $('mcCat').textContent      = CAT_LABELS[mcCurrent.cat];
   $('mcNikudTag').textContent = mcNikud ? 'נִקּוּד' : 'ללא ניקוד';
-  $('mcHeb').textContent     = mcNikud ? mcCurrent.heb : mcCurrent.plain;
+  $('mcHeb').textContent      = mcNikud ? mcCurrent.heb : mcCurrent.plain;
 
-  const options    = buildOptions(mcCurrent);
-  const choicesEl  = $('mcChoices');
+  const options   = buildOptions(mcCurrent);
+  const choicesEl = $('mcChoices');
   choicesEl.innerHTML = '';
 
   options.forEach(opt => {
@@ -856,14 +854,14 @@ function showMC() {
     btn.className   = 'choice-btn';
     btn.textContent = optionText(opt);
     btn.dataset.id  = opt.id;
-    btn.onclick     = () => selectChoice(opt, options);
+    btn.onclick     = () => selectChoice(opt);
     choicesEl.appendChild(btn);
   });
 
   $('mcNext').classList.remove('visible');
 }
 
-function selectChoice(chosen, options) {
+function selectChoice(chosen) {
   if (mcAnswered) return;
   mcAnswered = true;
   mcTotal++;
@@ -871,11 +869,10 @@ function selectChoice(chosen, options) {
   const isCorrect = chosen.id === mcCurrent.id;
   if (isCorrect) mcCorrect++;
 
-  // Highlight all buttons
   $('mcChoices').querySelectorAll('.choice-btn').forEach(btn => {
     btn.disabled = true;
     const id = parseInt(btn.dataset.id);
-    if (id === mcCurrent.id)  btn.classList.add('correct');
+    if (id === mcCurrent.id) btn.classList.add('correct');
     else if (id === chosen.id) btn.classList.add('wrong');
   });
 
@@ -890,7 +887,6 @@ function selectChoice(chosen, options) {
       ? 'All cards learned!'
       : `${mcDeck.length} card${mcDeck.length !== 1 ? 's' : ''} remaining`;
   } else {
-    // Re-insert card a few positions ahead
     const c   = mcDeck.shift();
     const pos = mcDeck.length === 0 ? 0
       : 1 + Math.floor(Math.random() * Math.min(mcDeck.length, 4));
