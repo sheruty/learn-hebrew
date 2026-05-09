@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Hebrew</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:         #f4f2ed;
+      --surface:    #ffffff;
+      --primary:    #2563eb;
+      --primary-lt: #dbeafe;
+      --success:    #15803d;
+      --success-lt: #dcfce7;
+      --danger:     #b91c1c;
+      --danger-lt:  #fee2e2;
+      --text:       #1e293b;
+      --muted:      #64748b;
+      --border:     #e2e8f0;
+      --shadow:     0 2px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .logo-heb {
+      font-family: 'Frank Ruhl Libre', serif;
+      color: var(--primary);
+      font-size: 1.35rem;
+    }
+
+    /* Mode toggle */
+    .mode-toggle {
+      display: flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .mode-btn {
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      border: none;
+      background: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+    }
+
+    .mode-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .progress-pill {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--primary-lt);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .progress-pill .n { color: var(--primary); }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 620px;
+      padding: 1.75rem 1.25rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    /* ── Category tabs ── */
+    .cats {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cat-btn {
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .cat-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .cat-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* ── Progress bar ── */
+    .bar-track {
+      width: 100%;
+      height: 5px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--success);
+      border-radius: 999px;
+      transition: width 0.45s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .deck-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      align-self: flex-end;
+    }
+
+    /* ── Sections ── */
+    .section {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .section.active { display: flex; }
+
+    /* ── Shared card face pieces ── */
+    .face-label {
+      position: absolute;
+      top: 1.125rem;
+      left: 1.375rem;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .nikud-tag {
+      position: absolute;
+      top: 1.125rem;
+      right: 1.375rem;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.175rem 0.6rem;
+      font-family: 'Frank Ruhl Libre', serif;
+    }
+
+    .heb {
+      font-family: 'Frank Ruhl Libre', serif;
+      font-size: 4.5rem;
+      font-weight: 400;
+      color: var(--text);
+      direction: rtl;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .audio-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.775rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .audio-btn:hover, .audio-btn.playing {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 1rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    /* ── Flashcard ── */
+    .card-wrap {
+      width: 100%;
+      perspective: 1200px;
+    }
+
+    .card {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.52s cubic-bezier(0.4,0,0.2,1);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .card.flipped { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 1.25rem;
+      box-shadow: var(--shadow);
+      background: var(--surface);
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.875rem;
+    }
+
+    .face-back { transform: rotateY(180deg); }
+
+    .en {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .note {
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-style: italic;
+      min-height: 1.25em;
+    }
+
+    /* ── FC action buttons ── */
+    .actions {
+      display: flex;
+      gap: 0.875rem;
+      width: 100%;
+    }
+
+    .act-btn {
+      flex: 1;
+      padding: 0.8rem 1.25rem;
+      border: none;
+      border-radius: 0.875rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, opacity 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .act-btn:disabled { opacity: 0.35; cursor: default; }
+
+    .again { background: var(--danger-lt); color: var(--danger); }
+    .again:not(:disabled):hover { background: var(--danger); color: #fff; }
+
+    .got { background: var(--success-lt); color: var(--success); }
+    .got:not(:disabled):hover { background: var(--success); color: #fff; }
+
+    .kbd-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      opacity: 0.65;
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 0.1em 0.4em;
+      background: var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.7rem;
+    }
+
+    /* ── Multiple Choice ── */
+    .mc-score {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--muted);
+      align-self: flex-end;
+    }
+
+    .mc-score .cn { color: var(--success); }
+
+    .mc-question {
+      width: 100%;
+      background: var(--surface);
+      border-radius: 1.25rem;
+      box-shadow: var(--shadow);
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      min-height: 200px;
+      justify-content: center;
+    }
+
+    .mc-choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem;
+      width: 100%;
+    }
+
+    .choice-btn {
+      padding: 0.875rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--surface);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .choice-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-lt);
+      color: var(--primary);
+    }
+
+    .choice-btn.correct {
+      border-color: var(--success) !important;
+      background: var(--success-lt) !important;
+      color: var(--success) !important;
+    }
+
+    .choice-btn.wrong {
+      border-color: var(--danger) !important;
+      background: var(--danger-lt) !important;
+      color: var(--danger) !important;
+    }
+
+    .choice-btn:disabled { cursor: default; }
+
+    .mc-next {
+      width: 100%;
+      padding: 0.8125rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 0.875rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.15s;
+      display: none;
+    }
+
+    .mc-next.visible { display: block; }
+    .mc-next:hover { opacity: 0.85; }
+
+    /* ── Completion ── */
+    .completion {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      text-align: center;
+      padding: 2rem 1rem;
+      width: 100%;
+    }
+
+    .completion.show { display: flex; }
+
+    .completion-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--success-lt);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--success);
+    }
+
+    .completion h2 { font-size: 1.625rem; font-weight: 700; }
+    .completion p { color: var(--muted); max-width: 340px; line-height: 1.55; }
+
+    .restart-btn {
+      padding: 0.8125rem 2.25rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 0.875rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.15s;
+    }
+
+    .restart-btn:hover { opacity: 0.85; }
+
+    @media (max-width: 480px) {
+      .heb { font-size: 3.25rem; }
+      .en  { font-size: 1.5rem; }
+      .card { height: 260px; }
+      header { padding: 0.875rem 1rem; }
+      .mode-btn { padding: 0.275rem 0.65rem; }
+    }
+
+    @media (max-width: 360px) {
+      .mc-choices { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Learn <span class="logo-heb">עברית</span></div>
+
+  <div class="mode-toggle" id="modeToggle">
+    <button class="mode-btn active" data-mode="fc">Flashcards</button>
+    <button class="mode-btn"        data-mode="mc">Multiple Choice</button>
+  </div>
+
+  <div class="progress-pill">
+    <span class="n" id="learnedN">0</span> / <span id="totalN">0</span> learned
+  </div>
+</header>
+
+<main>
+
+  <!-- Category filters (shared) -->
+  <div class="cats" id="cats">
+    <button class="cat-btn active" data-cat="all">All</button>
+    <button class="cat-btn" data-cat="pronouns">Pronouns</button>
+    <button class="cat-btn" data-cat="greetings">Greetings</button>
+    <button class="cat-btn" data-cat="daily">Daily Terms</button>
+  </div>
+
+  <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+  <div class="deck-label" id="deckLabel"></div>
+
+  <!-- ── Flashcard section ── -->
+  <div class="section active" id="fcSection">
+
+    <div class="card-wrap" id="cardWrap">
+      <div class="card" id="card">
+
+        <div class="face face-front">
+          <span class="face-label" id="frontCat"></span>
+          <span class="nikud-tag"  id="nikudTag"></span>
+          <div class="heb" id="hebDisplay" dir="rtl"></div>
+          <button class="audio-btn" id="audioBtn"
+            onclick="event.stopPropagation(); speakCard(fcCurrent, this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            Listen
+          </button>
+          <span class="hint">Tap to reveal &nbsp;·&nbsp; Space</span>
+        </div>
+
+        <div class="face face-back">
+          <span class="face-label" id="backCat"></span>
+          <div class="en"   id="enDisplay"></div>
+          <div class="note" id="noteDisplay"></div>
+          <button class="audio-btn" id="audioBtnBack"
+            onclick="event.stopPropagation(); speakCard(fcCurrent, this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            Listen
+          </button>
+          <span class="hint">Tap to flip back</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="act-btn again" id="againBtn" onclick="markAgain()" disabled>&#8617; Again</button>
+      <button class="act-btn got"   id="gotBtn"   onclick="markGot()"   disabled>Got it &#10003;</button>
+    </div>
+
+    <div class="kbd-hint">
+      <kbd>Space</kbd> flip &nbsp; <kbd>&larr;</kbd> again &nbsp; <kbd>&rarr;</kbd> got it
+    </div>
+
+  </div>
+
+  <!-- ── Multiple Choice section ── -->
+  <div class="section" id="mcSection">
+
+    <div class="mc-score">
+      <span class="cn" id="mcCorrectN">0</span> / <span id="mcTotalN">0</span> correct this session
+    </div>
+
+    <div class="mc-question">
+      <span class="face-label" id="mcCat"></span>
+      <span class="nikud-tag"  id="mcNikudTag"></span>
+      <div class="heb" id="mcHeb" dir="rtl"></div>
+      <button class="audio-btn" id="mcAudioBtn"
+        onclick="speakCard(mcCurrent, this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg>
+        Listen
+      </button>
+    </div>
+
+    <div class="mc-choices" id="mcChoices"></div>
+
+    <button class="mc-next" id="mcNext" onclick="nextMC()">Next &rarr;</button>
+
+  </div>
+
+  <!-- ── Completion (shared) ── -->
+  <div class="completion" id="completion">
+    <div class="completion-icon">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>Session complete!</h2>
+    <p id="completionMsg"></p>
+    <button class="restart-btn" onclick="restartSession()">Study Again</button>
+  </div>
+
+</main>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+
+const CARDS = [
+  // Pronouns
+  { id:  1, cat: 'pronouns', heb: 'אֲנִי',          plain: 'אני',          en: 'I',                        note: null },
+  { id:  2, cat: 'pronouns', heb: 'אַתָּה',         plain: 'אתה',          en: 'You',                      note: 'masculine singular' },
+  { id:  3, cat: 'pronouns', heb: 'אַתְּ',          plain: 'את',           en: 'You',                      note: 'feminine singular' },
+  { id:  4, cat: 'pronouns', heb: 'הוּא',           plain: 'הוא',          en: 'He',                       note: null },
+  { id:  5, cat: 'pronouns', heb: 'הִיא',           plain: 'היא',          en: 'She',                      note: null },
+  { id:  6, cat: 'pronouns', heb: 'אֲנַחְנוּ',     plain: 'אנחנו',        en: 'We',                       note: null },
+  { id:  7, cat: 'pronouns', heb: 'אַתֶּם',         plain: 'אתם',          en: 'You',                      note: 'masculine plural' },
+  { id:  8, cat: 'pronouns', heb: 'אַתֶּן',         plain: 'אתן',          en: 'You',                      note: 'feminine plural' },
+  { id:  9, cat: 'pronouns', heb: 'הֵם',            plain: 'הם',           en: 'They',                     note: 'masculine' },
+  { id: 10, cat: 'pronouns', heb: 'הֵן',            plain: 'הן',           en: 'They',                     note: 'feminine' },
+
+  // Greetings
+  { id: 11, cat: 'greetings', heb: 'שָׁלוֹם',           plain: 'שלום',         en: 'Hello / Goodbye / Peace',  note: null },
+  { id: 12, cat: 'greetings', heb: 'בֹּקֶר טוֹב',       plain: 'בוקר טוב',     en: 'Good morning',             note: null },
+  { id: 13, cat: 'greetings', heb: 'צָהֳרַיִם טוֹבִים', plain: 'צהריים טובים', en: 'Good afternoon',           note: null },
+  { id: 14, cat: 'greetings', heb: 'עֶרֶב טוֹב',        plain: 'ערב טוב',      en: 'Good evening',             note: null },
+  { id: 15, cat: 'greetings', heb: 'לַיְלָה טוֹב',      plain: 'לילה טוב',     en: 'Good night',               note: null },
+  { id: 16, cat: 'greetings', heb: 'מַה שְּׁלוֹמְךָ',  plain: 'מה שלומך',     en: 'How are you?',             note: 'masculine' },
+  { id: 17, cat: 'greetings', heb: 'מַה שְּׁלוֹמֵךְ',  plain: 'מה שלומך',     en: 'How are you?',             note: 'feminine' },
+  { id: 18, cat: 'greetings', heb: 'בְּסֵדֶר',          plain: 'בסדר',         en: 'OK / Fine / Alright',      note: null },
+  { id: 19, cat: 'greetings', heb: 'לְהִתְרָאוֹת',     plain: 'להתראות',      en: 'See you / Goodbye',        note: null },
+  { id: 20, cat: 'greetings', heb: 'בְּבַקָּשָׁה',     plain: 'בבקשה',        en: "Please / You're welcome",  note: null },
+  { id: 21, cat: 'greetings', heb: 'תּוֹדָה',           plain: 'תודה',         en: 'Thank you',                note: null },
+  { id: 22, cat: 'greetings', heb: 'תּוֹדָה רַבָּה',   plain: 'תודה רבה',     en: 'Thank you very much',      note: null },
+
+  // Daily terms
+  { id: 23, cat: 'daily', heb: 'כֵּן',          plain: 'כן',        en: 'Yes',                   note: null },
+  { id: 24, cat: 'daily', heb: 'לֹא',           plain: 'לא',        en: 'No',                    note: null },
+  { id: 25, cat: 'daily', heb: 'סְלִיחָה',      plain: 'סליחה',     en: 'Excuse me / Sorry',     note: null },
+  { id: 26, cat: 'daily', heb: 'אֵיפֹה',        plain: 'איפה',      en: 'Where',                 note: null },
+  { id: 27, cat: 'daily', heb: 'מָה',           plain: 'מה',        en: 'What',                  note: null },
+  { id: 28, cat: 'daily', heb: 'מִי',           plain: 'מי',        en: 'Who',                   note: null },
+  { id: 29, cat: 'daily', heb: 'מָתַי',         plain: 'מתי',       en: 'When',                  note: null },
+  { id: 30, cat: 'daily', heb: 'לָמָּה',        plain: 'למה',       en: 'Why',                   note: null },
+  { id: 31, cat: 'daily', heb: 'כַּמָּה',       plain: 'כמה',       en: 'How much / How many',   note: null },
+  { id: 32, cat: 'daily', heb: 'אֵיךְ',         plain: 'איך',       en: 'How',                   note: null },
+  { id: 33, cat: 'daily', heb: 'עֶזְרָה',       plain: 'עזרה',      en: 'Help',                  note: null },
+  { id: 34, cat: 'daily', heb: 'מַיִם',         plain: 'מים',       en: 'Water',                 note: null },
+  { id: 35, cat: 'daily', heb: 'אֹכֶל',         plain: 'אוכל',      en: 'Food',                  note: null },
+  { id: 36, cat: 'daily', heb: 'בַּיִת',        plain: 'בית',       en: 'Home / House',          note: null },
+  { id: 37, cat: 'daily', heb: 'שֵׁם',          plain: 'שם',        en: 'Name',                  note: null },
+  { id: 38, cat: 'daily', heb: 'יוֹם',          plain: 'יום',       en: 'Day',                   note: null },
+  { id: 39, cat: 'daily', heb: 'שָׁנָה',        plain: 'שנה',       en: 'Year',                  note: null },
+  { id: 40, cat: 'daily', heb: 'טוֹב',          plain: 'טוב',       en: 'Good',                  note: null },
+  { id: 41, cat: 'daily', heb: 'חָבֵר',         plain: 'חבר',       en: 'Friend',                note: 'masculine' },
+  { id: 42, cat: 'daily', heb: 'חֲבֵרָה',       plain: 'חברה',      en: 'Friend',                note: 'feminine' },
+  { id: 43, cat: 'daily', heb: 'כֶּסֶף',        plain: 'כסף',       en: 'Money',                 note: null },
+  { id: 44, cat: 'daily', heb: 'שָׁעָה',        plain: 'שעה',       en: "Hour / O'clock",        note: null },
+  { id: 45, cat: 'daily', heb: 'רְחוֹב',        plain: 'רחוב',      en: 'Street',                note: null },
+];
+
+const CAT_LABELS = { pronouns: 'Pronoun', greetings: 'Greeting', daily: 'Daily Term' };
+
+// ── Shared helpers ─────────────────────────────────────────────────────────────
+
+function $ (id) { return document.getElementById(id); }
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function optionText(card) {
+  return card.note ? `${card.en} (${card.note})` : card.en;
+}
+
+function speakCard(card, btnEl) {
+  if (!card) return;
+  if (!window.speechSynthesis) { alert('Audio not supported in this browser.'); return; }
+  window.speechSynthesis.cancel();
+  const utt  = new SpeechSynthesisUtterance(card.heb);
+  utt.lang   = 'he-IL';
+  utt.rate   = 0.82;
+  const heV  = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('he'));
+  if (heV) utt.voice = heV;
+  if (btnEl) {
+    btnEl.classList.add('playing');
+    utt.onend = () => btnEl.classList.remove('playing');
+  }
+  speechSynthesis.speak(utt);
+}
+
+// ── Shared state ───────────────────────────────────────────────────────────────
+
+let activeMode = 'fc';
+let activeCat  = 'all';
+
+function pool() {
+  return activeCat === 'all' ? CARDS : CARDS.filter(c => c.cat === activeCat);
+}
+
+function updateProgress(learned, total) {
+  $('learnedN').textContent = learned;
+  $('totalN').textContent   = total;
+  $('barFill').style.width  = total > 0 ? (learned / total * 100) + '%' : '0%';
+}
+
+// ── Flashcard mode ─────────────────────────────────────────────────────────────
+
+let fcDeck    = [];
+let fcLearned = new Set();
+let fcCurrent = null;
+let fcNikud   = true;
+let fcFlipped = false;
+
+function initFC() {
+  fcDeck    = shuffle(pool());
+  fcLearned.clear();
+  fcFlipped = false;
+  showFC();
+}
+
+function showFC() {
+  const comp = $('completion');
+  comp.classList.remove('show');
+
+  const total = fcDeck.length + fcLearned.size;
+  updateProgress(fcLearned.size, total);
+  $('deckLabel').textContent = fcDeck.length === 0
+    ? 'All cards learned!'
+    : `${fcDeck.length} card${fcDeck.length !== 1 ? 's' : ''} remaining`;
+
+  if (fcDeck.length === 0) {
+    comp.classList.add('show');
+    $('completionMsg').textContent =
+      `You worked through all ${fcLearned.size} cards. Keep it up!`;
+    return;
+  }
+
+  fcCurrent = fcDeck[0];
+  fcNikud   = Math.random() < 0.55;
+  fcFlipped = false;
+
+  const card = $('card');
+  card.style.transition = 'none';
+  card.classList.remove('flipped');
+  card.offsetHeight;
+  card.style.transition = '';
+
+  const lbl = CAT_LABELS[fcCurrent.cat];
+  $('frontCat').textContent  = lbl;
+  $('backCat').textContent   = lbl;
+  $('nikudTag').textContent  = fcNikud ? 'נִקּוּד' : 'ללא ניקוד';
+  $('hebDisplay').textContent = fcNikud ? fcCurrent.heb : fcCurrent.plain;
+  $('enDisplay').textContent  = fcCurrent.en;
+  $('noteDisplay').textContent = fcCurrent.note ? `(${fcCurrent.note})` : '';
+
+  $('againBtn').disabled = true;
+  $('gotBtn').disabled   = true;
+}
+
+function fcFlip() {
+  if (!fcCurrent) return;
+  fcFlipped = !fcFlipped;
+  $('card').classList.toggle('flipped', fcFlipped);
+  $('againBtn').disabled = !fcFlipped;
+  $('gotBtn').disabled   = !fcFlipped;
+}
+
+function markGot() {
+  if (!fcCurrent || !fcFlipped) return;
+  fcLearned.add(fcCurrent.id);
+  fcDeck.shift();
+  showFC();
+}
+
+function markAgain() {
+  if (!fcCurrent || !fcFlipped) return;
+  const c   = fcDeck.shift();
+  const pos = fcDeck.length === 0 ? 0
+    : 1 + Math.floor(Math.random() * Math.min(fcDeck.length, 4));
+  fcDeck.splice(pos, 0, c);
+  showFC();
+}
+
+// ── Multiple Choice mode ───────────────────────────────────────────────────────
+
+let mcDeck     = [];
+let mcLearned  = new Set();
+let mcCurrent  = null;
+let mcNikud    = true;
+let mcCorrect  = 0;
+let mcTotal    = 0;
+let mcAnswered = false;
+
+function initMC() {
+  mcDeck    = shuffle(pool());
+  mcLearned.clear();
+  mcCorrect = 0;
+  mcTotal   = 0;
+  showMC();
+}
+
+function buildOptions(correct) {
+  const correctTxt = optionText(correct);
+  // pull distractors from pool first, then all cards if needed
+  const distractors = shuffle(
+    pool().filter(c => c.id !== correct.id && optionText(c) !== correctTxt)
+  ).slice(0, 3);
+
+  if (distractors.length < 3) {
+    const extra = shuffle(
+      CARDS.filter(c =>
+        c.id !== correct.id &&
+        optionText(c) !== correctTxt &&
+        !distractors.find(d => d.id === c.id)
+      )
+    ).slice(0, 3 - distractors.length);
+    distractors.push(...extra);
+  }
+
+  return shuffle([correct, ...distractors]);
+}
+
+function showMC() {
+  const comp = $('completion');
+  comp.classList.remove('show');
+
+  const total = mcDeck.length + mcLearned.size;
+  updateProgress(mcLearned.size, total);
+  $('deckLabel').textContent = mcDeck.length === 0
+    ? 'All cards learned!'
+    : `${mcDeck.length} card${mcDeck.length !== 1 ? 's' : ''} remaining`;
+  $('mcCorrectN').textContent = mcCorrect;
+  $('mcTotalN').textContent   = mcTotal;
+
+  if (mcDeck.length === 0) {
+    comp.classList.add('show');
+    $('completionMsg').textContent =
+      `You answered ${mcCorrect} of ${mcTotal} correctly. Keep it up!`;
+    return;
+  }
+
+  mcCurrent  = mcDeck[0];
+  mcNikud    = Math.random() < 0.55;
+  mcAnswered = false;
+
+  $('mcCat').textContent     = CAT_LABELS[mcCurrent.cat];
+  $('mcNikudTag').textContent = mcNikud ? 'נִקּוּד' : 'ללא ניקוד';
+  $('mcHeb').textContent     = mcNikud ? mcCurrent.heb : mcCurrent.plain;
+
+  const options    = buildOptions(mcCurrent);
+  const choicesEl  = $('mcChoices');
+  choicesEl.innerHTML = '';
+
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className   = 'choice-btn';
+    btn.textContent = optionText(opt);
+    btn.dataset.id  = opt.id;
+    btn.onclick     = () => selectChoice(opt, options);
+    choicesEl.appendChild(btn);
+  });
+
+  $('mcNext').classList.remove('visible');
+}
+
+function selectChoice(chosen, options) {
+  if (mcAnswered) return;
+  mcAnswered = true;
+  mcTotal++;
+
+  const isCorrect = chosen.id === mcCurrent.id;
+  if (isCorrect) mcCorrect++;
+
+  // Highlight all buttons
+  $('mcChoices').querySelectorAll('.choice-btn').forEach(btn => {
+    btn.disabled = true;
+    const id = parseInt(btn.dataset.id);
+    if (id === mcCurrent.id)  btn.classList.add('correct');
+    else if (id === chosen.id) btn.classList.add('wrong');
+  });
+
+  $('mcCorrectN').textContent = mcCorrect;
+  $('mcTotalN').textContent   = mcTotal;
+
+  if (isCorrect) {
+    mcLearned.add(mcCurrent.id);
+    mcDeck.shift();
+    updateProgress(mcLearned.size, mcDeck.length + mcLearned.size);
+    $('deckLabel').textContent = mcDeck.length === 0
+      ? 'All cards learned!'
+      : `${mcDeck.length} card${mcDeck.length !== 1 ? 's' : ''} remaining`;
+  } else {
+    // Re-insert card a few positions ahead
+    const c   = mcDeck.shift();
+    const pos = mcDeck.length === 0 ? 0
+      : 1 + Math.floor(Math.random() * Math.min(mcDeck.length, 4));
+    mcDeck.splice(pos, 0, c);
+  }
+
+  $('mcNext').classList.add('visible');
+}
+
+function nextMC() { showMC(); }
+
+// ── Session restart ────────────────────────────────────────────────────────────
+
+function restartSession() {
+  $('completion').classList.remove('show');
+  if (activeMode === 'fc') initFC();
+  else initMC();
+}
+
+// ── Mode switching ─────────────────────────────────────────────────────────────
+
+function setMode(mode) {
+  activeMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === mode)
+  );
+  $('fcSection').classList.toggle('active', mode === 'fc');
+  $('mcSection').classList.toggle('active', mode === 'mc');
+  $('completion').classList.remove('show');
+  if (mode === 'fc') initFC();
+  else initMC();
+}
+
+// ── Events ─────────────────────────────────────────────────────────────────────
+
+$('modeToggle').addEventListener('click', e => {
+  const btn = e.target.closest('.mode-btn');
+  if (btn && btn.dataset.mode !== activeMode) setMode(btn.dataset.mode);
+});
+
+$('cats').addEventListener('click', e => {
+  const btn = e.target.closest('.cat-btn');
+  if (!btn) return;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = btn.dataset.cat;
+  if (activeMode === 'fc') initFC();
+  else initMC();
+});
+
+$('card').addEventListener('click', fcFlip);
+
+document.addEventListener('keydown', e => {
+  if (activeMode !== 'fc') return;
+  if (e.target.tagName === 'BUTTON') return;
+  if (e.code === 'Space')      { e.preventDefault(); fcFlip(); }
+  if (e.code === 'ArrowRight') { e.preventDefault(); if (fcFlipped) markGot(); }
+  if (e.code === 'ArrowLeft')  { e.preventDefault(); if (fcFlipped) markAgain(); }
+});
+
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = () => {};
+}
+
+// ── Boot ───────────────────────────────────────────────────────────────────────
+
+initFC();
+</script>
+</body>
+</html>
