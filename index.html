@@ -353,6 +353,14 @@
     }
     .type-hint-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
     .type-hint-btn:disabled { opacity: 0.4; cursor: default; }
+    .type-bottom-row { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 0.5rem; }
+    .type-skip-btn {
+      background: none; border: 1.5px solid var(--border); border-radius: 0.875rem;
+      padding: 0.6rem 1.25rem; font-size: 0.875rem; font-weight: 600; color: var(--muted);
+      cursor: pointer; font-family: 'Inter', sans-serif; transition: border-color 0.15s, color 0.15s;
+    }
+    .type-skip-btn:hover { border-color: var(--primary); color: var(--primary); }
+    #typeNext { width: auto; }
     .type-hint-display {
       direction: rtl; text-align: center; font-family: 'Frank Ruhl Libre', serif;
       font-size: 1.5rem; letter-spacing: 0.15em; color: var(--text); min-height: 1.5rem;
@@ -556,7 +564,10 @@
       <div class="type-answer"   id="typeAnswer"></div>
       <div class="heb-keyboard"  id="hebKeyboard"></div>
     </div>
-    <button class="mc-next" id="typeNext" onclick="nextType()">Next &rarr;</button>
+    <div class="type-bottom-row">
+      <button class="type-skip-btn" id="typeSkip" onclick="skipType()">Skip</button>
+      <button class="mc-next" id="typeNext" onclick="nextType()">Next &rarr;</button>
+    </div>
   </div>
 
   <!-- ── Alphabet section ── -->
@@ -1001,6 +1012,7 @@ function showType() {
   $('typeFeedback').textContent = '';
   $('typeAnswer').textContent   = '';
   $('typeNext').classList.remove('visible');
+  $('typeSkip').style.display = '';
   $('typeSubmit').disabled      = false;
   $('typeInput').focus();
 }
@@ -1021,6 +1033,7 @@ function submitType() {
     $('typeAnswer').textContent   = typeCurrent.heb;
     $('typeSubmit').disabled      = true;
     $('typeNext').classList.add('visible');
+    $('typeSkip').style.display = 'none';
   } else {
     if (!typeRequeued) {
       typeTotal++;
@@ -1061,6 +1074,14 @@ function typeHint() {
 }
 
 function nextType() { showType(); }
+
+function skipType() {
+  if (!typeCurrent || typeAnswered) return;
+  const c = typeDeck.shift();
+  const pos = typeDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(typeDeck.length, 4));
+  typeDeck.splice(pos, 0, c);
+  showType();
+}
 
 function initType() {
   typeDeck = shuffle(pool());
