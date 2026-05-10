@@ -328,7 +328,7 @@
     }
     .type-en { font-size: 1.875rem; font-weight: 600; text-align: center; color: var(--text); }
     .type-note { font-size: 0.8rem; color: var(--muted); font-style: italic; min-height: 1.2rem; }
-    .type-input-row { display: flex; gap: 0.5rem; width: 100%; }
+    .type-input-row { display: flex; gap: 0.5rem; width: 100%; flex-wrap: wrap; }
     .type-input {
       flex: 1; font-family: 'Frank Ruhl Libre', serif; font-size: max(1.75rem, 16px);
       text-align: right; direction: rtl; padding: 0.5rem 0.75rem;
@@ -409,6 +409,8 @@
       .listen-choices { grid-template-columns: 1fr; }
       .listen-choice { padding: 0.875rem 1rem; font-size: 1.05rem; }
       .type-en { font-size: 1.5rem; }
+      .type-input { flex-basis: 100%; }
+      .type-submit, .type-hint-btn { flex: 1; }
     }
 
     @media (max-width: 420px) {
