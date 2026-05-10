@@ -6,7 +6,7 @@
   <title>Learn Hebrew</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Heebo:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:         #f4f2ed;
@@ -160,11 +160,6 @@
       direction: rtl; line-height: 1.1; text-align: center;
     }
 
-    .heb.cursive-font {
-      font-family: 'Heebo', sans-serif;
-      color: var(--primary);
-    }
-
     .audio-btn {
       display: inline-flex; align-items: center; gap: 0.375rem;
       background: none; border: 1.5px solid var(--border); border-radius: 999px;
@@ -270,68 +265,8 @@
     .mc-next:hover { opacity: 0.85; }
 
     /* ── Alphabet section ── */
-    .alph-tabs {
-      display: flex;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 999px; padding: 3px; gap: 2px;
-    }
-
-    .alph-tab {
-      padding: 0.3rem 1.125rem; border-radius: 999px; border: none;
-      background: none; font-size: 0.8125rem; font-weight: 500; color: var(--muted);
-      cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .alph-tab.active { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
-    .alph-view-row { display: flex; gap: 0.5rem; align-self: flex-end; }
-
-    .av-btn {
-      padding: 0.35rem 0.875rem; border-radius: 999px;
-      border: 1.5px solid var(--border); background: var(--surface);
-      font-size: 0.775rem; font-weight: 500; color: var(--muted);
-      cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .av-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
-
-    /* Reference grid */
-    .ref-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.625rem;
-      width: 100%;
-    }
-
-    .letter-card {
-      background: var(--surface); border-radius: 0.875rem;
-      box-shadow: var(--shadow); padding: 0.875rem 0.5rem;
-      display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
-      cursor: default;
-    }
-
-    .lc-num { font-size: 0.6rem; color: var(--muted); font-weight: 500; align-self: flex-start; padding-left: 0.25rem; }
-    .lc-print { font-family: 'Frank Ruhl Libre', serif; font-size: 2.25rem; color: var(--text); direction: rtl; line-height: 1; }
-    .lc-name  { font-size: 0.675rem; font-weight: 600; color: var(--text); text-align: center; line-height: 1.2; margin-top: 0.1rem; }
-    .lc-sound { font-size: 0.575rem; color: var(--muted); font-style: italic; text-align: center; }
-    .lc-final { font-size: 0.575rem; color: var(--muted); text-align: center; direction: rtl; }
-
-    .lc-divider { width: 80%; height: 1px; background: var(--border); margin: 0.3rem 0; }
-
-    .lc-cursive { font-family: 'Heebo', sans-serif; font-size: 2.25rem; color: var(--primary); direction: rtl; line-height: 1; }
-    .lc-cursive-label { font-size: 0.5rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.7; }
-
-    .alph-note {
-      font-size: 0.7375rem; color: var(--muted); text-align: center;
-      padding: 0.625rem 1rem; background: var(--surface);
-      border-radius: 0.625rem; border: 1px solid var(--border);
-      line-height: 1.5; width: 100%;
-    }
-
-    /* Alphabet practice deck label */
-    .alph-deck-label { font-size: 0.8rem; color: var(--muted); align-self: flex-end; }
+    .alph-chart-wrap { width: 100%; }
+    .alph-chart-img  { width: 100%; height: auto; border-radius: 0.75rem; box-shadow: var(--shadow); display: block; }
 
     /* ── Completion ── */
     .completion {
@@ -464,67 +399,9 @@
 
   <!-- ── Alphabet section ── -->
   <div class="section" id="alphSection">
-
-    <!-- Sub-tabs -->
-    <div class="alph-tabs" id="alphTabs">
-      <button class="alph-tab active" data-atab="consonants">Consonants</button>
-      <button class="alph-tab"        data-atab="vowels">Vowels</button>
+    <div class="alph-chart-wrap">
+      <img src="hebrew-alphabet-chart.jpg" alt="Hebrew Alphabet Reference Chart" class="alph-chart-img" />
     </div>
-
-    <!-- Reference / Practice toggle -->
-    <div class="alph-view-row">
-      <button class="av-btn active" data-av="ref">Reference</button>
-      <button class="av-btn"        data-av="practice">Practice</button>
-    </div>
-
-    <!-- Reference grid (populated by JS) -->
-    <div class="ref-grid" id="refGrid"></div>
-
-    <!-- Disclaimer -->
-    <div class="alph-note" id="alphNote">
-      Cursive column uses Heebo (sans-serif) as a visual approximation — letterforms differ from handwritten ktav yaad. Verify stroke shapes with your class workbook.
-    </div>
-
-    <!-- Practice area -->
-    <div id="alphPracticeArea" style="display:none; width:100%; flex-direction:column; align-items:center; gap:1.125rem;">
-
-      <div class="alph-deck-label" id="alphDeckLabel"></div>
-
-      <div class="card-wrap">
-        <div class="card" id="alphCard">
-
-          <div class="face" id="alphFront">
-            <span class="face-label" id="alphFrontCat"></span>
-            <span class="form-tag"   id="alphFormFront"></span>
-            <div class="heb" id="alphFrontLetter" dir="rtl"></div>
-            <button class="audio-btn" onclick="event.stopPropagation(); speakAlphCurrent(this)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-              </svg>Listen
-            </button>
-            <span class="hint">Tap to reveal</span>
-          </div>
-
-          <div class="face face-back" id="alphBack">
-            <span class="face-label" id="alphBackCat"></span>
-            <div class="en"   id="alphBackName"></div>
-            <div class="note" id="alphBackSound"></div>
-            <span class="form-tag" id="alphFormBack"></span>
-            <div class="heb back-alt-letter" id="alphBackLetter" dir="rtl"></div>
-            <span class="hint">Tap to flip back</span>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="act-btn again" id="alphAgain" onclick="alphMarkAgain()" disabled>&#8617; Again</button>
-        <button class="act-btn got"   id="alphGot"   onclick="alphMarkGot()"   disabled>Got it &#10003;</button>
-      </div>
-
-    </div>
-
   </div>
 
   <!-- ── Completion (shared) ── -->
@@ -594,44 +471,9 @@ const CARDS = [
 
 // ── Alphabet data ─────────────────────────────────────────────────────────────
 
-const CONSONANTS = [
-  { id:'c01', type:'consonant', num:1,  letter:'א', name:'Alef',       hebName:'אָלֶף',  sound:'silent',             final:null },
-  { id:'c02', type:'consonant', num:2,  letter:'ב', name:'Bet / Vet',  hebName:'בֵּית',  sound:'b / v',              final:null },
-  { id:'c03', type:'consonant', num:3,  letter:'ג', name:'Gimel',      hebName:'גִּימֶל',sound:'g',                  final:null },
-  { id:'c04', type:'consonant', num:4,  letter:'ד', name:'Dalet',      hebName:'דָּלֶת', sound:'d',                  final:null },
-  { id:'c05', type:'consonant', num:5,  letter:'ה', name:'He',         hebName:'הֵא',    sound:'h',                  final:null },
-  { id:'c06', type:'consonant', num:6,  letter:'ו', name:'Vav',        hebName:'וָו',    sound:'v',                  final:null },
-  { id:'c07', type:'consonant', num:7,  letter:'ז', name:'Zayin',      hebName:'זַיִן',  sound:'z',                  final:null },
-  { id:'c08', type:'consonant', num:8,  letter:'ח', name:'Chet',       hebName:'חֵית',   sound:'ch (guttural)',       final:null },
-  { id:'c09', type:'consonant', num:9,  letter:'ט', name:'Tet',        hebName:'טֵית',   sound:'t',                  final:null },
-  { id:'c10', type:'consonant', num:10, letter:'י', name:'Yod',        hebName:'יוֹד',   sound:'y',                  final:null },
-  { id:'c11', type:'consonant', num:11, letter:'כ', name:'Kaf / Khaf', hebName:'כַּף',   sound:'k / kh',             final:'ך' },
-  { id:'c12', type:'consonant', num:12, letter:'ל', name:'Lamed',      hebName:'לָמֶד',  sound:'l',                  final:null },
-  { id:'c13', type:'consonant', num:13, letter:'מ', name:'Mem',        hebName:'מֵם',    sound:'m',                  final:'ם' },
-  { id:'c14', type:'consonant', num:14, letter:'נ', name:'Nun',        hebName:'נוּן',   sound:'n',                  final:'ן' },
-  { id:'c15', type:'consonant', num:15, letter:'ס', name:'Samech',     hebName:'סָמֶך',  sound:'s',                  final:null },
-  { id:'c16', type:'consonant', num:16, letter:'ע', name:'Ayin',       hebName:'עַיִן',  sound:'silent / guttural',  final:null },
-  { id:'c17', type:'consonant', num:17, letter:'פ', name:'Pe / Fe',    hebName:'פֵּא',   sound:'p / f',              final:'ף' },
-  { id:'c18', type:'consonant', num:18, letter:'צ', name:'Tzadi',      hebName:'צָדִי',  sound:'tz',                 final:'ץ' },
-  { id:'c19', type:'consonant', num:19, letter:'ק', name:'Kof',        hebName:'קוֹף',   sound:'k',                  final:null },
-  { id:'c20', type:'consonant', num:20, letter:'ר', name:'Resh',       hebName:'רֵישׁ',  sound:'r',                  final:null },
-  { id:'c21', type:'consonant', num:21, letter:'ש', name:'Shin / Sin', hebName:'שִׁין',  sound:'sh / s',             final:null },
-  { id:'c22', type:'consonant', num:22, letter:'ת', name:'Tav',        hebName:'תָּו',   sound:'t',                  final:null },
-];
-
-const VOWELS = [
-  { id:'v01', type:'vowel', letter:'אַ', name:'Patach', hebName:'פַּתָּח', sound:'ah (short)' },
-  { id:'v02', type:'vowel', letter:'אָ', name:'Kamatz', hebName:'קָמָץ',  sound:'ah (long)' },
-  { id:'v03', type:'vowel', letter:'אֵ', name:'Tzere',  hebName:'צֵרֵה',  sound:'ay / ey' },
-  { id:'v04', type:'vowel', letter:'אֶ', name:'Segol',  hebName:'סֶגוֹל', sound:'eh' },
-  { id:'v05', type:'vowel', letter:'אִ', name:'Hirik',  hebName:'חִירִיק',sound:'ee' },
-  { id:'v06', type:'vowel', letter:'אֹ', name:'Holam',  hebName:'חוֹלָם', sound:'oh' },
-  { id:'v07', type:'vowel', letter:'אוּ',name:'Shuruk', hebName:'שּׁוּרוּק',sound:'oo' },
-  { id:'v08', type:'vowel', letter:'אֻ', name:'Kubutz', hebName:'קֻבּוּץ',sound:'oo (short)' },
-  { id:'v09', type:'vowel', letter:'אְ', name:'Shva',   hebName:'שְׁוָא',  sound:'silent / brief e' },
-];
 
 const CAT_LABELS = { pronouns:'Pronoun', greetings:'Greeting', daily:'Daily Term' };
+
 
 // ── Shared helpers ─────────────────────────────────────────────────────────────
 
@@ -804,179 +646,13 @@ function selectChoice(chosen) {
 
 function nextMC() { showMC(); }
 
-// ── Alphabet mode ─────────────────────────────────────────────────────────────
-
-let activeAlphTab = 'consonants';
-let activeAlphView = 'ref';
-let alphDeck = [], alphLearned = new Set(), alphCurrent = null;
-let alphShowPrint = true, alphFlipped = false;
-
-function alphPool() { return activeAlphTab === 'consonants' ? CONSONANTS : VOWELS; }
-
-function initAlph() {
-  renderRefGrid();
-  setAlphView('ref');
-  // reset practice
-  alphDeck = []; alphLearned.clear();
-  $('pillLabel').textContent = 'letters';
-  updateProgress(0, alphPool().length);
-  $('deckLabel').textContent = '';
-}
-
-function renderRefGrid() {
-  const data = alphPool();
-  const grid = $('refGrid');
-  grid.innerHTML = '';
-  data.forEach(item => {
-    const cell = document.createElement('div');
-    cell.className = 'letter-card';
-    if (item.type === 'consonant') {
-      const finalNote = item.final ? `<div class="lc-final">final: ${item.final}</div>` : '';
-      cell.innerHTML = `
-        <div class="lc-num">${item.num}</div>
-        <div class="lc-print">${item.letter}</div>
-        <div class="lc-name">${item.name}</div>
-        <div class="lc-sound">${item.sound}</div>
-        ${finalNote}
-        <div class="lc-divider"></div>
-        <div class="lc-cursive">${item.letter}</div>
-        <div class="lc-cursive-label">cursive ≈</div>
-      `;
-    } else {
-      cell.innerHTML = `
-        <div class="lc-print">${item.letter}</div>
-        <div class="lc-name">${item.name}</div>
-        <div class="lc-sound">${item.sound}</div>
-      `;
-    }
-    grid.appendChild(cell);
-  });
-}
-
-function setAlphView(view) {
-  activeAlphView = view;
-  document.querySelectorAll('.av-btn').forEach(b => b.classList.toggle('active', b.dataset.av === view));
-  $('refGrid').style.display        = view === 'ref'      ? '' : 'none';
-  $('alphNote').style.display       = view === 'ref'      ? '' : 'none';
-  $('alphPracticeArea').style.display = view === 'practice' ? 'flex' : 'none';
-  if (view === 'practice') initAlphPractice();
-}
-
-function initAlphPractice() {
-  alphDeck = shuffle(alphPool()); alphLearned.clear(); alphFlipped = false;
-  $('completion').classList.remove('show');
-  updateProgress(0, alphDeck.length);
-  showAlphCard();
-}
-
-function showAlphCard() {
-  $('completion').classList.remove('show');
-  const total = alphDeck.length + alphLearned.size;
-  updateProgress(alphLearned.size, total);
-  $('alphDeckLabel').textContent = alphDeck.length === 0 ? 'All letters learned!'
-    : `${alphDeck.length} remaining`;
-
-  if (alphDeck.length === 0) {
-    $('completion').classList.add('show');
-    $('completionMsg').textContent = `You worked through all ${alphLearned.size} ${activeAlphTab}. Well done!`;
-    return;
-  }
-
-  alphCurrent  = alphDeck[0];
-  // For consonants, randomly show print or cursive on front; for vowels always show print
-  alphShowPrint = alphCurrent.type === 'vowel' ? true : Math.random() < 0.5;
-  alphFlipped  = false;
-
-  const aCard = $('alphCard');
-  aCard.style.transition = 'none'; aCard.classList.remove('flipped'); aCard.offsetHeight; aCard.style.transition = '';
-
-  const catLabel = alphCurrent.type === 'consonant' ? 'Consonant' : 'Vowel';
-  $('alphFrontCat').textContent = catLabel;
-  $('alphBackCat').textContent  = catLabel;
-
-  // Front: the chosen form
-  const frontEl = $('alphFrontLetter');
-  frontEl.textContent = alphCurrent.letter;
-  if (alphShowPrint) {
-    frontEl.className = 'heb';
-    $('alphFormFront').textContent = 'Print';
-    $('alphFormFront').className   = 'form-tag';
-  } else {
-    frontEl.className = 'heb cursive-font';
-    $('alphFormFront').textContent = 'Cursive \u2248';
-    $('alphFormFront').className   = 'form-tag cursive-tag';
-  }
-
-  // Back: name + sound + the OTHER form (only for consonants)
-  $('alphBackName').textContent  = alphCurrent.name;
-  $('alphBackSound').textContent = alphCurrent.sound;
-
-  const backLetterEl = $('alphBackLetter');
-  if (alphCurrent.type === 'consonant') {
-    backLetterEl.textContent = alphCurrent.letter;
-    if (alphShowPrint) {
-      // front was print → back shows cursive
-      backLetterEl.className = 'heb back-alt-letter cursive-font';
-      $('alphFormBack').textContent = 'Cursive \u2248';
-      $('alphFormBack').className   = 'form-tag cursive-tag';
-    } else {
-      // front was cursive → back shows print
-      backLetterEl.className = 'heb back-alt-letter';
-      $('alphFormBack').textContent = 'Print';
-      $('alphFormBack').className   = 'form-tag';
-    }
-    backLetterEl.style.display  = '';
-    $('alphFormBack').style.display = '';
-  } else {
-    backLetterEl.style.display  = 'none';
-    $('alphFormBack').style.display = 'none';
-  }
-
-  $('alphAgain').disabled = true; $('alphGot').disabled = true;
-}
-
-function alphFlipCard() {
-  if (!alphCurrent) return;
-  alphFlipped = !alphFlipped;
-  $('alphCard').classList.toggle('flipped', alphFlipped);
-  $('alphAgain').disabled = !alphFlipped; $('alphGot').disabled = !alphFlipped;
-}
-
-function alphMarkGot() {
-  if (!alphCurrent || !alphFlipped) return;
-  alphLearned.add(alphCurrent.id); alphDeck.shift(); showAlphCard();
-}
-
-function alphMarkAgain() {
-  if (!alphCurrent || !alphFlipped) return;
-  const c = alphDeck.shift();
-  const pos = alphDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(alphDeck.length, 4));
-  alphDeck.splice(pos, 0, c); showAlphCard();
-}
-
-function speakAlphCurrent(btnEl) {
-  if (!alphCurrent) return;
-  if (!window.speechSynthesis) { alert('Audio not supported in this browser.'); return; }
-  window.speechSynthesis.cancel();
-  const text = alphCurrent.hebName || alphCurrent.letter;
-  const utt  = new SpeechSynthesisUtterance(text);
-  utt.lang   = 'he-IL'; utt.rate = 0.8;
-  const heV  = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('he'));
-  if (heV) utt.voice = heV;
-  if (btnEl) { btnEl.classList.add('playing'); utt.onend = () => btnEl.classList.remove('playing'); }
-  speechSynthesis.speak(utt);
-}
 
 // ── Session restart ────────────────────────────────────────────────────────────
 
 function restartSession() {
   $('completion').classList.remove('show');
-  if (activeMode === 'fc')   initFC();
-  else if (activeMode === 'mc')   initMC();
-  else if (activeMode === 'alph') {
-    if (activeAlphView === 'practice') initAlphPractice();
-    else initAlph();
-  }
+  if (activeMode === 'fc') initFC();
+  else if (activeMode === 'mc') initMC();
 }
 
 // ── Mode switching ─────────────────────────────────────────────────────────────
@@ -994,11 +670,10 @@ function setMode(mode) {
   $('cats').style.display     = isVocab ? '' : 'none';
   $('barTrack').style.display = '';
   $('deckLabel').style.display = '';
-  $('pillLabel').textContent  = mode === 'alph' ? 'letters' : 'learned';
+  $('pillLabel').textContent = 'learned';
 
-  if (mode === 'fc')   initFC();
-  else if (mode === 'mc')   initMC();
-  else if (mode === 'alph') initAlph();
+  if (mode === 'fc') initFC();
+  else if (mode === 'mc') initMC();
 }
 
 // ── Events ─────────────────────────────────────────────────────────────────────
@@ -1017,22 +692,7 @@ $('cats').addEventListener('click', e => {
   if (activeMode === 'fc') initFC(); else initMC();
 });
 
-$('alphTabs').addEventListener('click', e => {
-  const btn = e.target.closest('.alph-tab');
-  if (!btn || btn.dataset.atab === activeAlphTab) return;
-  document.querySelectorAll('.alph-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  activeAlphTab = btn.dataset.atab;
-  initAlph();
-});
-
-document.querySelector('.alph-view-row').addEventListener('click', e => {
-  const btn = e.target.closest('.av-btn');
-  if (btn && btn.dataset.av !== activeAlphView) setAlphView(btn.dataset.av);
-});
-
 $('card').addEventListener('click', fcFlip);
-$('alphCard').addEventListener('click', alphFlipCard);
 
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'BUTTON') return;
@@ -1040,11 +700,6 @@ document.addEventListener('keydown', e => {
     if (e.code === 'Space')      { e.preventDefault(); fcFlip(); }
     if (e.code === 'ArrowRight') { e.preventDefault(); if (fcFlipped) markGot(); }
     if (e.code === 'ArrowLeft')  { e.preventDefault(); if (fcFlipped) markAgain(); }
-  }
-  if (activeMode === 'alph' && activeAlphView === 'practice') {
-    if (e.code === 'Space')      { e.preventDefault(); alphFlipCard(); }
-    if (e.code === 'ArrowRight') { e.preventDefault(); if (alphFlipped) alphMarkGot(); }
-    if (e.code === 'ArrowLeft')  { e.preventDefault(); if (alphFlipped) alphMarkAgain(); }
   }
 });
 
