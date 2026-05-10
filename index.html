@@ -322,8 +322,8 @@
     /* ── Type mode ── */
     .type-q {
       background: var(--surface); border-radius: 1.25rem; box-shadow: var(--shadow);
-      padding: 2rem 1.5rem; width: 100%; display: flex; flex-direction: column;
-      align-items: center; gap: 1rem; position: relative;
+      padding: 1.25rem 1.5rem; width: 100%; display: flex; flex-direction: column;
+      align-items: center; gap: 0.4rem; position: relative;
     }
     .type-en { font-size: 1.875rem; font-weight: 600; text-align: center; color: var(--text); }
     .type-note { font-size: 0.8rem; color: var(--muted); font-style: italic; min-height: 1.2rem; }
@@ -344,19 +344,35 @@
       cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.15s; white-space: nowrap;
     }
     .type-submit:hover { opacity: 0.88; }
-    .type-feedback { font-size: 0.9rem; text-align: center; min-height: 1.4rem; font-weight: 600; }
+    .type-hint-btn {
+      padding: 0 0.875rem; background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--muted);
+      cursor: pointer; white-space: nowrap; font-family: 'Inter', sans-serif;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .type-hint-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+    .type-hint-btn:disabled { opacity: 0.4; cursor: default; }
+    .type-hint-display {
+      direction: rtl; text-align: center; font-family: 'Frank Ruhl Libre', serif;
+      font-size: 1.5rem; letter-spacing: 0.15em; color: var(--text); min-height: 2rem;
+    }
+    .hint-char { display: inline-block; }
+    .hint-char.hidden { color: var(--border); }
+    .type-feedback { font-size: 0.9rem; text-align: center; font-weight: 600; min-height: 1.4rem; }
     .type-feedback.correct { color: var(--success); }
     .type-feedback.wrong   { color: var(--danger); }
     .type-answer { font-family: 'Frank Ruhl Libre', serif; font-size: 1.5rem; direction: rtl; text-align: center; color: var(--text); min-height: 2rem; }
-    .heb-keyboard { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35rem; width: 100%; margin-top: 0.25rem; }
+    .heb-keyboard { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35rem; width: 100%; margin-top: 0.25rem; direction: rtl; }
     .heb-key {
       background: var(--bg); border: 1.5px solid var(--border); border-radius: 0.5rem;
-      font-family: 'Frank Ruhl Libre', serif; font-size: 1.25rem; color: var(--text);
+      font-family: 'Frank Ruhl Libre', serif; font-size: 1.5rem; color: var(--text);
       padding: 0.4rem 0; cursor: pointer; text-align: center;
       transition: background 0.1s, border-color 0.1s;
     }
     .heb-key:hover { background: var(--primary-lt); border-color: var(--primary); }
     .heb-key.key-action { font-family: 'Inter', sans-serif; font-size: 0.7rem; grid-column: span 3; color: var(--muted); }
+    .heb-key.key-vowel { font-size: 1.85rem; padding: 0.5rem 0; }
+    .heb-kbd-divider { grid-column: 1 / -1; font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--muted); text-align: left; padding: 0.25rem 0 0.1rem; border-top: 1px solid var(--border); margin-top: 0.15rem; }
 
     /* ── Reset progress button ── */
     .reset-btn {
@@ -505,7 +521,9 @@
                placeholder="type Hebrew here…" autocomplete="off" autocorrect="off"
                autocapitalize="off" spellcheck="false" />
         <button class="type-submit" id="typeSubmit" onclick="submitType()">Check</button>
+        <button class="type-hint-btn" id="typeHintBtn" onclick="typeHint()">Hint</button>
       </div>
+      <div class="type-hint-display" id="typeHintDisplay"></div>
       <div class="type-feedback" id="typeFeedback"></div>
       <div class="type-answer"   id="typeAnswer"></div>
       <div class="heb-keyboard"  id="hebKeyboard"></div>
@@ -860,9 +878,23 @@ function initListen() {
 
 // ── Type mode ─────────────────────────────────────────────────────────────────
 
-const HEB_KEYS = ['א','ב','ג','ד','ה','ו','ז','ח','ט','י','כ','ל','מ','נ','ס','ע','פ','צ','ק','ר','ש','ת','ך','ם','ן','ף','ץ'];
-let typeDeck = [], typeCurrent = null, typeAnswered = false;
-let typeCorrect = 0, typeTotal = 0;
+const HEB_KEYS = ['א','ב','ג','ד','ה','ו','ז','ח','ט','י','כ','ך','ל','מ','ם','נ','ן','ס','ע','פ','ף','צ','ץ','ק','ר','ש','ת'];
+const HEB_VOWELS = [
+  // "ah": patah, qamats, hataf patah
+  { label:'אַ', char:'\u05B7' }, { label:'אָ', char:'\u05B8' }, { label:'אֲ', char:'\u05B2' },
+  // "eh": segol, tsere, hataf segol
+  { label:'אֶ', char:'\u05B6' }, { label:'אֵ', char:'\u05B5' }, { label:'אֱ', char:'\u05B1' },
+  // "ee": hiriq
+  { label:'אִ', char:'\u05B4' },
+  // "oh": holam, hataf qamats
+  { label:'אֹ', char:'\u05B9' }, { label:'אֳ', char:'\u05B3' },
+  // "oo": qubuts
+  { label:'אֻ', char:'\u05BB' },
+  // dagesh, then shva last
+  { label:'אּ', char:'\u05BC' }, { label:'אְ', char:'\u05B0' },
+];
+let typeDeck = [], typeCurrent = null, typeAnswered = false, typeRequeued = false;
+let typeCorrect = 0, typeTotal = 0, typeHintCount = 0;
 
 function buildHebKeyboard() {
   const kb = $('hebKeyboard');
@@ -887,6 +919,21 @@ function buildHebKeyboard() {
   del.type = 'button';
   del.addEventListener('mousedown', e => { e.preventDefault(); typeBackspace(); });
   kb.appendChild(del);
+
+  const divider = document.createElement('div');
+  divider.className = 'heb-kbd-divider';
+  divider.textContent = 'vowels';
+  kb.appendChild(divider);
+
+  HEB_VOWELS.forEach(v => {
+    const btn = document.createElement('button');
+    btn.className = 'heb-key key-vowel';
+    btn.textContent = v.label;
+    btn.type = 'button';
+    btn.title = v.char;
+    btn.addEventListener('mousedown', e => { e.preventDefault(); typeInsert(v.char); });
+    kb.appendChild(btn);
+  });
 }
 
 function typeInsert(char) {
@@ -913,6 +960,10 @@ function showType() {
   }
   typeCurrent = typeDeck[0];
   typeAnswered = false;
+  typeRequeued = false;
+  typeHintCount = 0;
+  $('typeHintDisplay').innerHTML = '';
+  $('typeHintBtn').disabled = false;
   const tp = pool();
   updateProgress(typeCorrect, tp.length);
   $('deckLabel').textContent = `${typeDeck.length} card${typeDeck.length !== 1 ? 's' : ''} left`;
@@ -929,26 +980,57 @@ function showType() {
 
 function submitType() {
   if (typeAnswered || !typeCurrent) return;
-  typeAnswered = true;
-  typeTotal++;
-  const strip = s => s.replace(/[\u05B0-\u05C7]/g, '').trim();
-  const typed = strip($('typeInput').value);
-  const correct = typed === strip(typeCurrent.plain) || typed === strip(typeCurrent.heb);
+  const stripAll  = s => s.normalize('NFKD').replace(/[\u05B0-\u05C7\u05F0-\u05F4\u200B-\u200F\u202A-\u202E\uFEFF]/g, '').trim();
+  const stripInv  = s => s.normalize('NFKD').replace(/[\u200B-\u200F\u202A-\u202E\uFEFF]/g, '').trim();
+  const typed     = $('typeInput').value;
+  const correct   = stripAll(typed) === stripAll(typeCurrent.plain) || stripAll(typed) === stripAll(typeCurrent.heb);
+  const vowelsOk  = stripInv(typed) === stripInv(typeCurrent.heb);
   if (correct) {
-    typeCorrect++;
+    if (!typeRequeued) { typeCorrect++; typeTotal++; }
+    typeAnswered = true;
     typeDeck.shift();
-    $('typeFeedback').textContent = 'Correct!';
+    $('typeFeedback').textContent = !vowelsOk ? 'Correct — but check the vowels.' : typeRequeued ? 'Got it!' : 'Correct!';
     $('typeFeedback').className   = 'type-feedback correct';
+    $('typeAnswer').textContent   = typeCurrent.heb;
+    $('typeSubmit').disabled      = true;
+    $('typeNext').classList.add('visible');
   } else {
-    const c = typeDeck.shift();
-    const pos = typeDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(typeDeck.length, 4));
-    typeDeck.splice(pos, 0, c);
-    $('typeFeedback').textContent = 'Not quite.';
+    if (!typeRequeued) {
+      typeTotal++;
+      const c = typeDeck.shift();
+      const pos = typeDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(typeDeck.length, 4));
+      typeDeck.splice(pos, 0, c);
+      typeRequeued = true;
+    }
+    $('typeFeedback').textContent = 'Not quite — try again!';
     $('typeFeedback').className   = 'type-feedback wrong';
     $('typeAnswer').textContent   = typeCurrent.heb;
+    $('typeInput').value          = '';
+    $('typeInput').focus();
   }
-  $('typeSubmit').disabled    = true;
-  $('typeNext').classList.add('visible');
+}
+
+function hebUnits(str) {
+  const units = [];
+  let cur = '';
+  for (const ch of str) {
+    const cp = ch.codePointAt(0);
+    if (cp >= 0x05D0 && cp <= 0x05EA && cur) { units.push(cur); cur = ''; }
+    cur += ch;
+  }
+  if (cur) units.push(cur);
+  return units;
+}
+
+function typeHint() {
+  if (!typeCurrent || typeAnswered) return;
+  const units = hebUnits(typeCurrent.heb);
+  typeHintCount = Math.min(typeHintCount + 1, units.length);
+  const display = $('typeHintDisplay');
+  display.innerHTML = units.map((u, i) =>
+    `<span class="hint-char ${i < typeHintCount ? '' : 'hidden'}">${i < typeHintCount ? u : '—'}</span>`
+  ).join(' ');
+  if (typeHintCount >= units.length) $('typeHintBtn').disabled = true;
 }
 
 function nextType() { showType(); }
