@@ -292,17 +292,92 @@
 
     .restart-btn:hover { opacity: 0.85; }
 
+    /* ── Listen mode ── */
+    .listen-score { font-size: 0.8rem; color: var(--muted); align-self: flex-end; }
+    .listen-score .cn { color: var(--primary); font-weight: 700; }
+    .listen-q {
+      background: var(--surface); border-radius: 1.25rem; box-shadow: var(--shadow);
+      padding: 2rem 1.5rem; width: 100%; display: flex; flex-direction: column;
+      align-items: center; gap: 1rem; position: relative;
+    }
+    .listen-prompt { font-size: 0.8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .listen-play-btn {
+      background: var(--primary); color: #fff; border: none; border-radius: 999px;
+      padding: 0.75rem 1.75rem; font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+      font-family: 'Inter', sans-serif; transition: opacity 0.15s;
+    }
+    .listen-play-btn:hover { opacity: 0.88; }
+    .listen-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; width: 100%; }
+    .listen-choice {
+      background: var(--surface); border: 2px solid var(--border); border-radius: 0.875rem;
+      padding: 1rem 0.5rem; font-family: 'Frank Ruhl Libre', serif;
+      font-size: 2rem; color: var(--text); cursor: pointer; text-align: center;
+      direction: rtl; transition: border-color 0.15s, background 0.15s;
+    }
+    .listen-choice:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-lt); }
+    .listen-choice.correct { background: var(--success-lt); border-color: var(--success); color: var(--success); }
+    .listen-choice.wrong   { background: var(--danger-lt);  border-color: var(--danger);  color: var(--danger); }
+
+    /* ── Type mode ── */
+    .type-q {
+      background: var(--surface); border-radius: 1.25rem; box-shadow: var(--shadow);
+      padding: 2rem 1.5rem; width: 100%; display: flex; flex-direction: column;
+      align-items: center; gap: 1rem; position: relative;
+    }
+    .type-en { font-size: 1.875rem; font-weight: 600; text-align: center; color: var(--text); }
+    .type-note { font-size: 0.8rem; color: var(--muted); font-style: italic; min-height: 1.2rem; }
+    .type-input-row { display: flex; gap: 0.5rem; width: 100%; }
+    .type-input {
+      flex: 1; font-family: 'Frank Ruhl Libre', serif; font-size: 1.75rem;
+      text-align: right; direction: rtl; padding: 0.5rem 0.75rem;
+      border: 2px solid var(--border); border-radius: 0.75rem;
+      background: var(--bg); color: var(--text); outline: none;
+      transition: border-color 0.15s;
+    }
+    .type-input:focus { border-color: var(--primary); }
+    .type-input.correct { border-color: var(--success); background: var(--success-lt); }
+    .type-input.wrong   { border-color: var(--danger);  background: var(--danger-lt); }
+    .type-submit {
+      padding: 0.5rem 1.25rem; background: var(--primary); color: #fff;
+      border: none; border-radius: 0.75rem; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.15s; white-space: nowrap;
+    }
+    .type-submit:hover { opacity: 0.88; }
+    .type-feedback { font-size: 0.9rem; text-align: center; min-height: 1.4rem; font-weight: 600; }
+    .type-feedback.correct { color: var(--success); }
+    .type-feedback.wrong   { color: var(--danger); }
+    .type-answer { font-family: 'Frank Ruhl Libre', serif; font-size: 1.5rem; direction: rtl; text-align: center; color: var(--text); min-height: 2rem; }
+    .heb-keyboard { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35rem; width: 100%; margin-top: 0.25rem; }
+    .heb-key {
+      background: var(--bg); border: 1.5px solid var(--border); border-radius: 0.5rem;
+      font-family: 'Frank Ruhl Libre', serif; font-size: 1.25rem; color: var(--text);
+      padding: 0.4rem 0; cursor: pointer; text-align: center;
+      transition: background 0.1s, border-color 0.1s;
+    }
+    .heb-key:hover { background: var(--primary-lt); border-color: var(--primary); }
+    .heb-key.key-action { font-family: 'Inter', sans-serif; font-size: 0.7rem; grid-column: span 3; color: var(--muted); }
+
+    /* ── Reset progress button ── */
+    .reset-btn {
+      background: none; border: 1px solid var(--border); border-radius: 999px;
+      padding: 0.25rem 0.625rem; font-size: 0.7rem; color: var(--muted);
+      cursor: pointer; font-family: 'Inter', sans-serif; transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .reset-btn:hover { color: var(--danger); border-color: var(--danger); }
+
     @media (max-width: 520px) {
-      .ref-grid { grid-template-columns: repeat(3, 1fr); }
       .heb { font-size: 3.5rem; }
       .en  { font-size: 1.5rem; }
       .card { height: 270px; }
     }
 
     @media (max-width: 380px) {
-      .ref-grid { grid-template-columns: repeat(2, 1fr); }
       .mc-choices { grid-template-columns: 1fr; }
-      .mode-btn { padding: 0.25rem 0.55rem; font-size: 0.7rem; }
+      .listen-choices { grid-template-columns: 1fr; }
+      .mode-btn { padding: 0.25rem 0.5rem; font-size: 0.68rem; }
+      .heb-keyboard { grid-template-columns: repeat(5, 1fr); }
     }
   </style>
 </head>
@@ -314,11 +389,16 @@
   <div class="mode-toggle" id="modeToggle">
     <button class="mode-btn active" data-mode="fc">Cards</button>
     <button class="mode-btn"        data-mode="mc">Quiz</button>
+    <button class="mode-btn"        data-mode="listen">Listen</button>
+    <button class="mode-btn"        data-mode="type">Type</button>
     <button class="mode-btn"        data-mode="alph">Alphabet</button>
   </div>
 
-  <div class="progress-pill">
-    <span class="n" id="learnedN">0</span> / <span id="totalN">0</span> <span id="pillLabel">learned</span>
+  <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+    <div class="progress-pill">
+      <span class="n" id="learnedN">0</span> / <span id="totalN">0</span> <span id="pillLabel">learned</span>
+    </div>
+    <button class="reset-btn" id="resetBtn" onclick="clearProgress()" title="Reset saved card progress">Reset</button>
   </div>
 </header>
 
@@ -395,6 +475,42 @@
 
     <div class="mc-choices" id="mcChoices"></div>
     <button class="mc-next" id="mcNext" onclick="nextMC()">Next &rarr;</button>
+  </div>
+
+  <!-- ── Listen section ── -->
+  <div class="section" id="listenSection">
+    <div class="listen-score"><span class="cn" id="listenCorrectN">0</span> / <span id="listenTotalN">0</span> correct this session</div>
+    <div class="listen-q">
+      <span class="face-label" id="listenCat"></span>
+      <div class="listen-prompt">What did you hear?</div>
+      <button class="listen-play-btn" onclick="playListenAudio(this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg> Play again
+      </button>
+    </div>
+    <div class="listen-choices" id="listenChoices"></div>
+    <button class="mc-next" id="listenNext" onclick="nextListen()">Next &rarr;</button>
+  </div>
+
+  <!-- ── Type section ── -->
+  <div class="section" id="typeSection">
+    <div class="type-q">
+      <span class="face-label" id="typeCat"></span>
+      <div class="type-en" id="typeEn"></div>
+      <div class="type-note" id="typeNote"></div>
+      <div class="type-input-row">
+        <input class="type-input" id="typeInput" type="text" dir="rtl"
+               placeholder="type Hebrew here…" autocomplete="off" autocorrect="off"
+               autocapitalize="off" spellcheck="false" />
+        <button class="type-submit" id="typeSubmit" onclick="submitType()">Check</button>
+      </div>
+      <div class="type-feedback" id="typeFeedback"></div>
+      <div class="type-answer"   id="typeAnswer"></div>
+      <div class="heb-keyboard"  id="hebKeyboard"></div>
+    </div>
+    <button class="mc-next" id="typeNext" onclick="nextType()">Next &rarr;</button>
   </div>
 
   <!-- ── Alphabet section ── -->
@@ -505,6 +621,25 @@ function speakCard(card, btnEl) {
   speechSynthesis.speak(utt);
 }
 
+// ── Persistence ───────────────────────────────────────────────────────────────
+
+const STORAGE_KEY = 'heb-fc-learned-v1';
+
+function loadProgress() {
+  try { return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+
+function saveProgress(learnedSet) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...learnedSet]));
+}
+
+function clearProgress() {
+  if (!confirm('Reset all saved card progress?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  if (activeMode === 'fc') initFC();
+}
+
 // ── Shared state ───────────────────────────────────────────────────────────────
 
 let activeMode = 'fc';
@@ -523,7 +658,10 @@ function updateProgress(learned, total) {
 let fcDeck = [], fcLearned = new Set(), fcCurrent = null, fcNikud = true, fcFlipped = false;
 
 function initFC() {
-  fcDeck = shuffle(pool()); fcLearned.clear(); fcFlipped = false; showFC();
+  fcLearned = loadProgress();
+  fcDeck = shuffle(pool().filter(c => !fcLearned.has(c.id)));
+  if (fcDeck.length === 0) { fcLearned = new Set(); fcDeck = shuffle(pool()); }
+  fcFlipped = false; showFC();
 }
 
 function showFC() {
@@ -562,11 +700,12 @@ function fcFlip() {
 
 function markGot() {
   if (!fcCurrent || !fcFlipped) return;
-  fcLearned.add(fcCurrent.id); fcDeck.shift(); showFC();
+  fcLearned.add(fcCurrent.id); saveProgress(fcLearned); fcDeck.shift(); showFC();
 }
 
 function markAgain() {
   if (!fcCurrent || !fcFlipped) return;
+  fcLearned.delete(fcCurrent.id); saveProgress(fcLearned);
   const c = fcDeck.shift();
   const pos = fcDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(fcDeck.length, 4));
   fcDeck.splice(pos, 0, c); showFC();
@@ -647,12 +786,188 @@ function selectChoice(chosen) {
 function nextMC() { showMC(); }
 
 
+// ── Listen mode ───────────────────────────────────────────────────────────────
+
+let listenDeck = [], listenLearned = new Set(), listenCurrent = null;
+let listenCorrect = 0, listenTotal = 0, listenAnswered = false;
+
+function buildListenOptions(correct) {
+  const others = shuffle(pool().filter(c => c.id !== correct.id));
+  return shuffle([correct, ...others.slice(0, 3)]);
+}
+
+function showListen() {
+  if (listenDeck.length === 0) {
+    $('completionMsg').textContent = `You heard ${listenCorrect} of ${listenTotal} correctly!`;
+    $('completion').classList.add('show');
+    return;
+  }
+  listenCurrent = listenDeck[0];
+  listenAnswered = false;
+  const lp = pool();
+  updateProgress(listenCorrect, lp.length);
+  $('deckLabel').textContent = `${listenDeck.length} card${listenDeck.length !== 1 ? 's' : ''} left`;
+  $('listenCat').textContent = listenCurrent.cat;
+  $('listenNext').classList.remove('visible');
+  const choices = buildListenOptions(listenCurrent);
+  const box = $('listenChoices');
+  box.innerHTML = '';
+  choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'listen-choice';
+    btn.textContent = optionText(c);
+    btn.dataset.cardId = c.id;
+    btn.onclick = () => selectListen(c);
+    box.appendChild(btn);
+  });
+  setTimeout(() => speakCard(listenCurrent, null), 350);
+}
+
+function playListenAudio(btnEl) { if (listenCurrent) speakCard(listenCurrent, btnEl); }
+
+function selectListen(chosen) {
+  if (listenAnswered) return;
+  listenAnswered = true;
+  listenTotal++;
+  const correct = chosen.id === listenCurrent.id;
+  if (correct) { listenCorrect++; listenDeck.shift(); }
+  else {
+    const c = listenDeck.shift();
+    const pos = listenDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(listenDeck.length, 4));
+    listenDeck.splice(pos, 0, c);
+  }
+  $('listenCorrectN').textContent = listenCorrect;
+  $('listenTotalN').textContent   = listenTotal;
+  $('listenChoices').querySelectorAll('.listen-choice').forEach(btn => {
+    const isCorrect = Number(btn.dataset.cardId) === listenCurrent.id;
+    btn.classList.toggle('correct', isCorrect);
+    btn.classList.toggle('wrong', !isCorrect && Number(btn.dataset.cardId) === chosen.id);
+    btn.disabled = true;
+  });
+  $('listenNext').classList.add('visible');
+}
+
+function nextListen() { showListen(); }
+
+function initListen() {
+  listenDeck = shuffle(pool());
+  listenLearned.clear();
+  listenCorrect = 0; listenTotal = 0;
+  $('listenCorrectN').textContent = '0';
+  $('listenTotalN').textContent   = '0';
+  showListen();
+}
+
+// ── Type mode ─────────────────────────────────────────────────────────────────
+
+const HEB_KEYS = ['א','ב','ג','ד','ה','ו','ז','ח','ט','י','כ','ל','מ','נ','ס','ע','פ','צ','ק','ר','ש','ת','ך','ם','ן','ף','ץ'];
+let typeDeck = [], typeCurrent = null, typeAnswered = false;
+let typeCorrect = 0, typeTotal = 0;
+
+function buildHebKeyboard() {
+  const kb = $('hebKeyboard');
+  kb.innerHTML = '';
+  HEB_KEYS.forEach(k => {
+    const btn = document.createElement('button');
+    btn.className = 'heb-key';
+    btn.textContent = k;
+    btn.type = 'button';
+    btn.addEventListener('mousedown', e => { e.preventDefault(); typeInsert(k); });
+    kb.appendChild(btn);
+  });
+  const sp = document.createElement('button');
+  sp.className = 'heb-key heb-key-space';
+  sp.textContent = 'space';
+  sp.type = 'button';
+  sp.addEventListener('mousedown', e => { e.preventDefault(); typeInsert(' '); });
+  kb.appendChild(sp);
+  const del = document.createElement('button');
+  del.className = 'heb-key heb-key-del';
+  del.textContent = '⌫';
+  del.type = 'button';
+  del.addEventListener('mousedown', e => { e.preventDefault(); typeBackspace(); });
+  kb.appendChild(del);
+}
+
+function typeInsert(char) {
+  const inp = $('typeInput');
+  const s = inp.selectionStart, e = inp.selectionEnd;
+  inp.value = inp.value.slice(0, s) + char + inp.value.slice(e);
+  inp.setSelectionRange(s + char.length, s + char.length);
+  inp.focus();
+}
+
+function typeBackspace() {
+  const inp = $('typeInput');
+  const s = inp.selectionStart, e = inp.selectionEnd;
+  if (s !== e) { inp.value = inp.value.slice(0, s) + inp.value.slice(e); inp.setSelectionRange(s, s); }
+  else if (s > 0) { inp.value = inp.value.slice(0, s - 1) + inp.value.slice(s); inp.setSelectionRange(s - 1, s - 1); }
+  inp.focus();
+}
+
+function showType() {
+  if (typeDeck.length === 0) {
+    $('completionMsg').textContent = `You typed ${typeCorrect} of ${typeTotal} correctly!`;
+    $('completion').classList.add('show');
+    return;
+  }
+  typeCurrent = typeDeck[0];
+  typeAnswered = false;
+  const tp = pool();
+  updateProgress(typeCorrect, tp.length);
+  $('deckLabel').textContent = `${typeDeck.length} card${typeDeck.length !== 1 ? 's' : ''} left`;
+  $('typeCat').textContent  = typeCurrent.cat;
+  $('typeEn').textContent   = typeCurrent.en;
+  $('typeNote').textContent = typeCurrent.note || '';
+  $('typeInput').value      = '';
+  $('typeFeedback').textContent = '';
+  $('typeAnswer').textContent   = '';
+  $('typeNext').classList.remove('visible');
+  $('typeSubmit').disabled      = false;
+  $('typeInput').focus();
+}
+
+function submitType() {
+  if (typeAnswered || !typeCurrent) return;
+  typeAnswered = true;
+  typeTotal++;
+  const strip = s => s.replace(/[\u05B0-\u05C7]/g, '').trim();
+  const typed = strip($('typeInput').value);
+  const correct = typed === strip(typeCurrent.plain) || typed === strip(typeCurrent.heb);
+  if (correct) {
+    typeCorrect++;
+    typeDeck.shift();
+    $('typeFeedback').textContent = 'Correct!';
+    $('typeFeedback').className   = 'type-feedback correct';
+  } else {
+    const c = typeDeck.shift();
+    const pos = typeDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(typeDeck.length, 4));
+    typeDeck.splice(pos, 0, c);
+    $('typeFeedback').textContent = 'Not quite.';
+    $('typeFeedback').className   = 'type-feedback wrong';
+    $('typeAnswer').textContent   = typeCurrent.heb;
+  }
+  $('typeSubmit').disabled    = true;
+  $('typeNext').classList.add('visible');
+}
+
+function nextType() { showType(); }
+
+function initType() {
+  typeDeck = shuffle(pool());
+  typeCorrect = 0; typeTotal = 0;
+  buildHebKeyboard();
+  showType();
+}
+
 // ── Session restart ────────────────────────────────────────────────────────────
 
 function restartSession() {
   $('completion').classList.remove('show');
-  if (activeMode === 'fc') initFC();
-  else if (activeMode === 'mc') initMC();
+  if      (activeMode === 'fc')     initFC();
+  else if (activeMode === 'mc')     initMC();
+  else if (activeMode === 'listen') initListen();
+  else if (activeMode === 'type')   initType();
 }
 
 // ── Mode switching ─────────────────────────────────────────────────────────────
@@ -660,20 +975,25 @@ function restartSession() {
 function setMode(mode) {
   activeMode = mode;
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
-  $('fcSection').classList.toggle('active',   mode === 'fc');
-  $('mcSection').classList.toggle('active',   mode === 'mc');
-  $('alphSection').classList.toggle('active', mode === 'alph');
+  $('fcSection').classList.toggle('active',     mode === 'fc');
+  $('mcSection').classList.toggle('active',     mode === 'mc');
+  $('listenSection').classList.toggle('active', mode === 'listen');
+  $('typeSection').classList.toggle('active',   mode === 'type');
+  $('alphSection').classList.toggle('active',   mode === 'alph');
   $('completion').classList.remove('show');
 
-  // Category tabs + bar visible only in vocab modes
   const isVocab = mode === 'fc' || mode === 'mc';
-  $('cats').style.display     = isVocab ? '' : 'none';
-  $('barTrack').style.display = '';
-  $('deckLabel').style.display = '';
-  $('pillLabel').textContent = 'learned';
+  const isStudy = mode === 'fc' || mode === 'mc' || mode === 'listen' || mode === 'type';
+  $('cats').style.display      = isVocab ? '' : 'none';
+  $('barTrack').style.display  = isStudy ? '' : 'none';
+  $('deckLabel').style.display = isStudy ? '' : 'none';
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) resetBtn.style.display = mode === 'fc' ? '' : 'none';
 
-  if (mode === 'fc') initFC();
-  else if (mode === 'mc') initMC();
+  if      (mode === 'fc')     { $('pillLabel').textContent = 'learned'; initFC(); }
+  else if (mode === 'mc')     { $('pillLabel').textContent = 'correct'; initMC(); }
+  else if (mode === 'listen') { $('pillLabel').textContent = 'correct'; initListen(); }
+  else if (mode === 'type')   { $('pillLabel').textContent = 'correct'; initType(); }
 }
 
 // ── Events ─────────────────────────────────────────────────────────────────────
@@ -694,6 +1014,10 @@ $('cats').addEventListener('click', e => {
 
 $('card').addEventListener('click', fcFlip);
 
+$('typeInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); typeAnswered ? nextType() : submitType(); }
+});
+
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'BUTTON') return;
   if (activeMode === 'fc') {
@@ -707,7 +1031,7 @@ if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschang
 
 // ── Boot ───────────────────────────────────────────────────────────────────────
 
-initFC();
+setMode('fc');
 </script>
 </body>
 </html>
