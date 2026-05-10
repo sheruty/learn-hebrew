@@ -1008,7 +1008,7 @@ function showType() {
 function submitType() {
   if (typeAnswered || !typeCurrent) return;
   const stripAll  = s => s.normalize('NFKD').replace(/[\u05B0-\u05C7\u05F0-\u05F4\u200B-\u200F\u202A-\u202E\uFEFF]/g, '').trim();
-  const stripInv  = s => s.normalize('NFKD').replace(/[\u200B-\u200F\u202A-\u202E\uFEFF]/g, '').trim();
+  const stripInv  = s => s.normalize('NFKD').replace(/[\u05C1\u05C2\u200B-\u200F\u202A-\u202E\uFEFF]/g, '').trim();
   const typed     = $('typeInput').value;
   const correct   = stripAll(typed) === stripAll(typeCurrent.plain) || stripAll(typed) === stripAll(typeCurrent.heb);
   const vowelsOk  = stripInv(typed) === stripInv(typeCurrent.heb);
