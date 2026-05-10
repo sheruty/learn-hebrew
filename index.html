@@ -353,14 +353,16 @@
     }
     .type-hint-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
     .type-hint-btn:disabled { opacity: 0.4; cursor: default; }
-    .type-bottom-row { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 0.5rem; }
-    .type-skip-btn {
-      background: none; border: 1.5px solid var(--border); border-radius: 0.875rem;
-      padding: 0.6rem 1.25rem; font-size: 0.875rem; font-weight: 600; color: var(--muted);
+    .type-skip-btn, .type-next-btn {
+      background: none; border: 1.5px solid var(--border); border-radius: 0.75rem;
+      padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--muted);
       cursor: pointer; font-family: 'Inter', sans-serif; transition: border-color 0.15s, color 0.15s;
+      white-space: nowrap;
     }
     .type-skip-btn:hover { border-color: var(--primary); color: var(--primary); }
-    #typeNext { width: auto; }
+    .type-next-btn { display: none; background: var(--primary); color: #fff; border-color: var(--primary); }
+    .type-next-btn.visible { display: block; }
+    .type-next-btn:hover { opacity: 0.88; }
     .type-hint-display {
       direction: rtl; text-align: center; font-family: 'Frank Ruhl Libre', serif;
       font-size: 1.5rem; letter-spacing: 0.15em; color: var(--text); min-height: 1.5rem;
@@ -418,8 +420,9 @@
       .listen-choice { padding: 0.875rem 1rem; font-size: 1.05rem; }
       .type-en { font-size: 1.5rem; }
       .type-input { font-size: 1.1rem; padding: 0.4rem 0.5rem; }
-      .type-submit { padding: 0.4rem 0.75rem; font-size: 0.85rem; }
-      .type-hint-btn { padding: 0 0.6rem; font-size: 0.85rem; }
+      .type-submit { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
+      .type-hint-btn { padding: 0 0.5rem; font-size: 0.85rem; }
+      .type-skip-btn, .type-next-btn { padding: 0.4rem 0.5rem; font-size: 0.85rem; }
     }
 
     @media (max-width: 420px) {
@@ -558,15 +561,13 @@
                autocapitalize="off" spellcheck="false" inputmode="none" />
         <button class="type-submit" id="typeSubmit" onclick="submitType()">Check</button>
         <button class="type-hint-btn" id="typeHintBtn" onclick="typeHint()">Hint</button>
+        <button class="type-skip-btn" id="typeSkip" onclick="skipType()">Skip</button>
+        <button class="type-next-btn" id="typeNext" onclick="nextType()">Next &rarr;</button>
       </div>
       <div class="type-hint-display" id="typeHintDisplay"></div>
       <div class="type-feedback" id="typeFeedback"></div>
       <div class="type-answer"   id="typeAnswer"></div>
       <div class="heb-keyboard"  id="hebKeyboard"></div>
-    </div>
-    <div class="type-bottom-row">
-      <button class="type-skip-btn" id="typeSkip" onclick="skipType()">Skip</button>
-      <button class="mc-next" id="typeNext" onclick="nextType()">Next &rarr;</button>
     </div>
   </div>
 
