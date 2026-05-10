@@ -1078,7 +1078,7 @@ function nextType() { showType(); }
 function skipType() {
   if (!typeCurrent || typeAnswered) return;
   const c = typeDeck.shift();
-  const pos = typeDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * Math.min(typeDeck.length, 4));
+  const pos = typeDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * typeDeck.length);
   typeDeck.splice(pos, 0, c);
   showType();
 }
