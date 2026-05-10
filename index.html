@@ -355,14 +355,14 @@
     .type-hint-btn:disabled { opacity: 0.4; cursor: default; }
     .type-hint-display {
       direction: rtl; text-align: center; font-family: 'Frank Ruhl Libre', serif;
-      font-size: 1.5rem; letter-spacing: 0.15em; color: var(--text); min-height: 2rem;
+      font-size: 1.5rem; letter-spacing: 0.15em; color: var(--text); min-height: 1.5rem;
     }
     .hint-char { display: inline-block; }
     .hint-char.hidden { color: var(--border); }
-    .type-feedback { font-size: 0.9rem; text-align: center; font-weight: 600; min-height: 1.4rem; }
+    .type-feedback { font-size: 0.9rem; text-align: center; font-weight: 600; min-height: 1.1rem; }
     .type-feedback.correct { color: var(--success); }
     .type-feedback.wrong   { color: var(--danger); }
-    .type-answer { font-family: 'Frank Ruhl Libre', serif; font-size: 1.5rem; direction: rtl; text-align: center; color: var(--text); min-height: 2rem; }
+    .type-answer { font-family: 'Frank Ruhl Libre', serif; font-size: 1.5rem; direction: rtl; text-align: center; color: var(--text); min-height: 1.5rem; }
     .heb-keyboard { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35rem; width: 100%; margin-top: 0.25rem; direction: rtl; }
     .heb-key {
       background: var(--bg); border: 1.5px solid var(--border); border-radius: 0.5rem;
@@ -542,7 +542,6 @@
   <!-- ── Type section ── -->
   <div class="section" id="typeSection">
     <div class="type-q">
-      <span class="face-label" id="typeCat"></span>
       <div class="type-en" id="typeEn"></div>
       <div class="type-note" id="typeNote"></div>
       <div class="type-input-row">
@@ -996,7 +995,6 @@ function showType() {
   const tp = pool();
   updateProgress(typeCorrect, tp.length);
   $('deckLabel').textContent = `${typeDeck.length} card${typeDeck.length !== 1 ? 's' : ''} left`;
-  $('typeCat').textContent  = typeCurrent.cat;
   $('typeEn').textContent   = typeCurrent.en;
   $('typeNote').textContent = typeCurrent.note || '';
   $('typeInput').value      = '';
