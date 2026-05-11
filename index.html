@@ -935,7 +935,7 @@ const HEB_VOWELS = [
   // dagesh, then shva last
   { label:'אּ', char:'\u05BC' }, { label:'אְ', char:'\u05B0' },
 ];
-let typeDeck = [], typeCurrent = null, typeAnswered = false, typeRequeued = false;
+let typeDeck = [], typeCurrent = null, typeAnswered = false, typeRequeued = false, typeVowelCheck = false;
 let typeCorrect = 0, typeTotal = 0, typeHintCount = 0;
 
 function buildHebKeyboard() {
@@ -1003,6 +1003,7 @@ function showType() {
   typeCurrent = typeDeck[0];
   typeAnswered = false;
   typeRequeued = false;
+  typeVowelCheck = false;
   typeHintCount = 0;
   $('typeHintDisplay').innerHTML = '';
   $('typeHintBtn').disabled = false;
@@ -1027,11 +1028,23 @@ function submitType() {
   const typed     = $('typeInput').value;
   const correct   = stripAll(typed) === stripAll(typeCurrent.plain) || stripAll(typed) === stripAll(typeCurrent.heb);
   const vowelsOk  = stripInv(typed) === stripInv(typeCurrent.heb);
-  if (correct) {
-    if (!typeRequeued) { typeCorrect++; typeTotal++; }
+  if (correct && !vowelsOk) {
+    if (!typeVowelCheck) {
+      if (!typeRequeued) { typeCorrect++; typeTotal++; }
+      typeDeck.shift();
+      typeVowelCheck = true;
+    }
+    $('typeFeedback').textContent = 'Correct — but check the vowels.';
+    $('typeFeedback').className   = 'type-feedback correct';
+    $('typeAnswer').textContent   = typeCurrent.heb;
+    const inp = $('typeInput');
+    inp.focus();
+    inp.setSelectionRange(inp.value.length, inp.value.length);
+  } else if (correct) {
+    if (!typeVowelCheck && !typeRequeued) { typeCorrect++; typeTotal++; }
+    if (!typeVowelCheck) typeDeck.shift();
     typeAnswered = true;
-    typeDeck.shift();
-    $('typeFeedback').textContent = !vowelsOk ? 'Correct — but check the vowels.' : typeRequeued ? 'Got it!' : 'Correct!';
+    $('typeFeedback').textContent = (typeRequeued || typeVowelCheck) ? 'Got it!' : 'Correct!';
     $('typeFeedback').className   = 'type-feedback correct';
     $('typeAnswer').textContent   = typeCurrent.heb;
     $('typeSubmit').disabled      = true;
@@ -1048,8 +1061,9 @@ function submitType() {
     $('typeFeedback').textContent = 'Not quite — try again!';
     $('typeFeedback').className   = 'type-feedback wrong';
     $('typeAnswer').textContent   = typeCurrent.heb;
-    $('typeInput').value          = '';
-    $('typeInput').focus();
+    const inp2 = $('typeInput');
+    inp2.focus();
+    inp2.setSelectionRange(inp2.value.length, inp2.value.length);
   }
 }
 
@@ -1080,9 +1094,11 @@ function nextType() { showType(); }
 
 function skipType() {
   if (!typeCurrent || typeAnswered) return;
-  const c = typeDeck.shift();
-  const pos = typeDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * typeDeck.length);
-  typeDeck.splice(pos, 0, c);
+  if (!typeRequeued && !typeVowelCheck) {
+    const c = typeDeck.shift();
+    const pos = typeDeck.length === 0 ? 0 : 1 + Math.floor(Math.random() * typeDeck.length);
+    typeDeck.splice(pos, 0, c);
+  }
   showType();
 }
 
